@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Pizza</title>
+    </head>
+    <body>
+        <div>
+            <h1>Pizza</h1>
+            <a href="#">Explore Menu</a>
+            {% if user.is_authenticated %}
+                <a href="#">Cart</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
