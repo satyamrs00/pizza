@@ -1,14 +1,31 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 
 from orders.forms import RegistrationForm, LoginForm
-from orders.models import User
+from orders.models import Addon, Sub, Topping, User, Pizza, Pasta, Salad, Platter
 
 # Create your views here.
 def index(request):
-    
-    return render(request, 'orders/index.html')
+    rpizzas = Pizza.objects.filter(type=0)
+    spizzas = Pizza.objects.filter(type=1)
+    toppings = Topping.objects.all()
+    subs = Sub.objects.all()
+    addons = Addon.objects.all()
+    pastas = Pasta.objects.all()
+    salads = Salad.objects.all()
+    platters = Platter.objects.all()
+    return render(request, 'orders/index.html', {
+        "rpizzas": rpizzas,
+        "spizzas": spizzas,
+        "toppings": toppings,
+        "subs": subs,
+        "addons": addons,
+        "pastas": pastas,
+        "salads": salads,
+        "platters": platters,    
+    })
 
 def register(request):
     if request.method == "POST":
@@ -54,3 +71,68 @@ def logout_view(request):
         logout(request)
     
     return redirect('index')
+
+@csrf_exempt
+def item(request, thing, id):
+    thing = thing.capitalize()
+    thing = globals()[thing]        
+    p = thing.objects.get(id=id)
+
+    try:
+        p.smallprice
+        sizeoptions = True
+    except AttributeError:
+        sizeoptions = False
+    
+    extrasoption = False
+    if thing == Pizza or thing == Sub:
+        extrasoption = True
+        if thing == Pizza:
+            t = Topping.objects.all()
+            extrasamount = p.extrascount
+            extrastype = 'Toppings'
+        else:
+            t = Addon.objects.all()
+            extrastype = 'Add-ons'
+            extrasamount = Addon.objects.count()
+
+        extras = []
+        extrasname = []
+        extrasprice = []
+        for item in t:
+            extras.append(item.id)
+            extrasname.append(item.name)
+            extrasprice.append(item.price)
+
+        return JsonResponse({
+            "id": p.id,
+            "name": p.name,
+            "sizeoptions": sizeoptions,
+            "extrasoption": extrasoption,
+            "smallprice": p.smallprice,
+            "largeprice": p.largeprice,
+            "extras": extras,
+            "extrasname": extrasname,
+            "extrasprice": extrasprice,
+            "extrastype": extrastype,
+            "extrasamount": extrasamount
+        })
+
+    if extrasoption == False and sizeoptions == True:
+        return JsonResponse({
+            "id": p.id,
+            "name": p.name,
+            "sizeoptions": sizeoptions,
+            "extrasoption": extrasoption,
+            "smallprice": p.smallprice,
+            "largeprice": p.largeprice
+        })
+    
+    if extrasoption == False and sizeoptions == False:
+        return JsonResponse({
+            "id": p.id,
+            "name": p.name,
+            "sizeoptions": sizeoptions,
+            "extrasoption": extrasoption,
+            "price": p.price
+        })

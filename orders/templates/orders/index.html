@@ -1,7 +1,174 @@
 {% extends "orders/layout.html" %}
+{%  load static %}
+
+{% block head %}
+    <script src="{% static 'orders/index.js' %}"></script>
+{% endblock %}
 
 {%  block body %}
     <div>
-        not yet developed
+        <h2>Menu</h2>
+        <div>
+            <div id="modal" class="modal"></div>
+            <h3>Regular Pizza</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in rpizzas %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.smallprice}}</td>
+                            <td>{{item.largeprice}}</td>
+                            <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Sicilian Pizza</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in spizzas %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.smallprice}}</td>
+                            <td>{{item.largeprice}}</td>
+                            <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Subs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in subs %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.smallprice}}</td>
+                            <td>{{item.largeprice}}</td>
+                            <td><button data-item="sub" class="addbutton" id="addsub{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Pasta</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in pastas %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.price}}</td>
+                            <td><button data-item="pasta" class="addbutton" id="addpasta{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Salad</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in salads %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.price}}</td>
+                            <td><button data-item="salad" class="addbutton" id="addsalad{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Dinner Platter</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in platters %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.smallprice}}</td>
+                            <td>{{item.largeprice}}</td>
+                            <td><button data-item="platter" class="addbutton" id="addplatter{{item.id}}">Add</button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+    <!-- <div class="modal-content">
+        <span class="close">
+            &times;
+        </span>
+        <form action="" method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <div>Select Size</div>
+            <label>
+                <input type="radio" name="size" value="small">
+                Small
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="size" value="large">
+                Large
+            </label>
+            <br>
+            <div>Select Toppings</div>
+            {% for item in toppings %}
+                <label>
+                    <input type="checkbox" class="topping" name="topping" value="topping{{item.id}}">
+                    {{ item.name }}
+                </label>
+                <br>
+            {% endfor %}
+            <input type="submit" value="Save">
+        </form>
+    </div> -->
 {% endblock %}

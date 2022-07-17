@@ -1,0 +1,2 @@
+modal box should be closed if clicked outside of it
+make nav bar vertical like in wiki

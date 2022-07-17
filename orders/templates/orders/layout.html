@@ -1,7 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
     <head>
        <title>Pizza</title>
+       <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+       {% block head %}
+       {% endblock %}
     </head>
     <body>
         <div>
