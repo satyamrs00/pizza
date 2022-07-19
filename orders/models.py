@@ -55,12 +55,14 @@ class User(AbstractUser):
 class PizzaCombination(models.Model):
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE, related_name="combinations")
     toppings = models.ManyToManyField(Topping)
-    price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
+    smallprice = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
+    largeprice = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
 class SubCombination(models.Model):
     sub = models.ForeignKey(Sub, on_delete=models.CASCADE, related_name="combinations")
     addons = models.ManyToManyField(Addon)
-    price = models.DecimalField(decimal_places=2, max_digits=10,default=0.00)
+    smallprice = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
+    largeprice = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
