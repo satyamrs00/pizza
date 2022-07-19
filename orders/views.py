@@ -1,3 +1,4 @@
+import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -6,7 +7,7 @@ import decimal
 from django.core.exceptions import ObjectDoesNotExist
 
 from orders.forms import RegistrationForm, LoginForm
-from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination
+from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination
 
 # Create your views here.
 def index(request):
@@ -84,56 +85,67 @@ def item(request, thing, id):
             if not request.POST.get('size'):
                 return HttpResponse('Select Size')
 
-        price = 0
-
         if thing == 'pizza':
-            if len(request.POST.get('Toppings')) != thingcls.objects.get(id=id).extrascount:
+            if len(request.POST.getlist('Toppings')) != thingcls.objects.get(id=id).extrascount:
+                print(len(request.POST.get('Toppings')))
+                print(thingcls.objects.get(id=id).extrascount)
                 return HttpResponse('Select proper number of toppings')
                 
             try:
-                p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), toppings__in= [int(e[8:]) for e in request.POST.getlist('Toppings')])[0]
+                p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'), toppings__in= [int(e[8:]) for e in request.POST.getlist('Toppings')])[0]
                 print(p)
             except IndexError:
-                p = PizzaCombination(pizza=thingcls.objects.get(id=id))
+                p = PizzaCombination(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 p.save()
 
-                p.smallprice = thingcls.objects.get(id=id).smallprice
-                p.largeprice = thingcls.objects.get(id=id).largeprice
+                if request.POST.get('size') == "small":
+                    p.price = thingcls.objects.get(id=id).smallprice
+                elif request.POST.get('size') == "large":
+                    p.price = thingcls.objects.get(id=id).largeprice
                 
                 for topping in request.POST.getlist('Toppings'):
                     topping_id = int(topping[8:])
                     p.toppings.add(Topping.objects.get(id=topping_id))
-                    p.smallprice += Topping.objects.get(id=topping_id).price
-                    p.largeprice += Topping.objects.get(id=topping_id).price
+                    p.price += Topping.objects.get(id=topping_id).price
                 p.save()
 
-        if thing == 'sub':
+        elif thing == 'sub':
             try:
-                p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), addons__in= [int(e[7:]) for e in request.POST.getlist('Add-ons')])[0]
+                p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'), addons__in= [int(e[7:]) for e in request.POST.getlist('Add-ons')])[0]
                 print(p)
             except IndexError:
-                p = SubCombination(sub=thingcls.objects.get(id=id))
+                p = SubCombination(sub=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 p.save()
 
-                p.smallprice = thingcls.objects.get(id=id).smallprice
-                p.largeprice = thingcls.objects.get(id=id).largeprice
+                if request.POST.get('size') == "small":
+                    p.price = thingcls.objects.get(id=id).smallprice
+                elif request.POST.get('size') == "large":
+                    p.price = thingcls.objects.get(id=id).largeprice
                 
                 for addon in request.POST.getlist('Add-ons'):
                     addon_id = int(addon[7:])
                     p.addons.add(Addon.objects.get(id=addon_id))
-                    p.smallprice += Addon.objects.get(id=addon_id).price
-                    p.largeprice += Addon.objects.get(id=addon_id).price
+                    p.price += Addon.objects.get(id=addon_id).price
                 p.save()
 
-        p = thingcls.objects.get(id=id)
-        if request.POST.get('size') == 'small':
-            price = p.smallprice
-        elif request.POST.get('size') == 'large':
-            price = p.largeprice
-        else:
-            price = p.price
-        print(price)
+        elif thing == "platter":
+            try:
+                p = PlatterCombination.objects.filter(platter=thingcls.objects.get(id=id), size=request.POST.get('size'))[0]
+                print(p)
+            except IndexError:
+                p = PlatterCombination(platter=thingcls.objects.get(id=id), size=request.POST.get('size'))
+                p.save()
 
+                if request.POST.get('size') == "small":
+                    p.price = thingcls.objects.get(id=id).smallprice
+                elif request.POST.get('size') == "large":
+                    p.price = thingcls.objects.get(id=id).largeprice
+           
+                p.save()
+            
+        else:
+            p = thingcls.objects.get(id=id)
+        
         try:
             c = Cart.objects.get(user=request.user)
         except Cart.DoesNotExist:
@@ -144,14 +156,14 @@ def item(request, thing, id):
             c.pizza.add(p)
         elif thing == 'sub':
             c.sub.add(p)
-        if thing == 'pasta':
+        elif thing == 'pasta':
             c.pasta.add(p)
         elif thing == 'salad':
             c.salad.add(p)
         elif thing == 'platter':
             c.platter.add(p)
 
-        c.price += decimal.Decimal(price)
+        c.price += p.price
         c.save()
         return redirect('index')
 
@@ -215,3 +227,6 @@ def item(request, thing, id):
             "extrasoption": extrasoption,
             "price": p.price
         })
+
+def cart(request):
+    pass

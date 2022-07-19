@@ -1,2 +1,3 @@
 modal box should be closed if clicked outside of it
 make nav bar vertical like in wiki
+remove csrf exempt and pass csrf token to js fetch calls
