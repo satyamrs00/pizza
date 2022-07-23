@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 import decimal
-from django.core.exceptions import ObjectDoesNotExist
+from itertools import chain
 
 from orders.forms import RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination
@@ -75,8 +75,24 @@ def logout_view(request):
     
     return redirect('index')
 
-@csrf_exempt
 def item(request, thing, id):
+    if request.method == "PATCH":
+        thingcls = globals()[thing]
+        print(thingcls)
+        i = thingcls.objects.get(id=id)
+        print(thing)
+        if thing in ['PizzaCombination', 'SubCombination', 'PlatterCombination']:
+            thing = thing[:-11]
+            print(thing)
+
+        c = Cart.objects.get(user=request.user)
+        getattr(c, thing.lower()).remove(i)
+        c.price -= i.price
+        c.save()
+        return JsonResponse({
+            "message": "successfully removed"
+        })
+
     thingcls = thing.capitalize()
     thingcls = globals()[thingcls]        
 
@@ -152,16 +168,7 @@ def item(request, thing, id):
             c = Cart(user=request.user)
             c.save()
 
-        if thing == 'pizza':
-            c.pizza.add(p)
-        elif thing == 'sub':
-            c.sub.add(p)
-        elif thing == 'pasta':
-            c.pasta.add(p)
-        elif thing == 'salad':
-            c.salad.add(p)
-        elif thing == 'platter':
-            c.platter.add(p)
+        getattr(c, thing).add(p)
 
         c.price += p.price
         c.save()
@@ -229,4 +236,9 @@ def item(request, thing, id):
         })
 
 def cart(request):
-    pass
+    c = Cart.objects.get(user=request.user)
+    items = list(chain(c.pizza.all(), c.sub.all(), c.pasta.all(), c.salad.all(), c.platter.all()))
+    return render(request, 'orders/cart.html', {
+        "items": items,
+        "cart": c
+    })

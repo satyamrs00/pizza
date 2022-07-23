@@ -72,10 +72,10 @@ class PlatterCombination(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     pizza = models.ManyToManyField(PizzaCombination, related_name="orders")
-    sub = models.ManyToManyField(Sub, related_name="orders")
+    sub = models.ManyToManyField(SubCombination, related_name="orders")
     pasta = models.ManyToManyField(Pasta, related_name="orders")
     salad = models.ManyToManyField(Salad, related_name="orders")
-    platter = models.ManyToManyField(Platter, related_name="orders")
+    platter = models.ManyToManyField(PlatterCombination, related_name="orders")
     status = models.IntegerField(choices=ORDER_STATUS, default=0)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
@@ -85,5 +85,5 @@ class Cart(models.Model):
     sub = models.ManyToManyField(SubCombination, related_name="cart")
     pasta = models.ManyToManyField(Pasta, related_name="cart")
     salad = models.ManyToManyField(Salad, related_name="cart")
-    platter = models.ManyToManyField(Platter, related_name="cart")
+    platter = models.ManyToManyField(PlatterCombination, related_name="cart")
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)

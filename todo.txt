@@ -1,3 +1,5 @@
-modal box should be closed if clicked outside of it
-make nav bar vertical like in wiki
-remove csrf exempt and pass csrf token to js fetch calls
+DONE: remove csrf exempt and pass csrf token to js fetch calls
+TODO: modal box should be closed if clicked outside of it
+TODO: make nav bar vertical like in wiki
+TODO: you could replace toppings field in pizzacombination and addons field in subcombination to extras and reduce html and views.py (item view for post) code
+TODO: dont show a menu item if the price is 0

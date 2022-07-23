@@ -1,0 +1,37 @@
+{% extends 'orders/layout.html' %}
+{% load tags %}
+{% load static %}
+
+{% block head %}
+    <script type="module" src="{% static 'orders/cart.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% for item in items %}
+            <div>
+                <div>
+                    {{ item.name }} 
+                    {{ item.pizza.name }}
+                    {{ item.sub.name }}
+                    {{ item.platter.name }}
+                </div>
+                <div>
+                    {% for extra in item.toppings.all %}
+                        {{ extra.name }}
+                    {% endfor %}
+                    {% for extra in item.addons.all %}
+                        {{ extra.name }}
+                    {% endfor %}
+                </div>
+                <div>{{ item.size }}</div>
+                <div>{{ item.price }}</div>
+                <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>
+            </div>
+            <hr>
+        {% endfor %}
+        <div>
+            Total Price : {{ cart.price }}
+        </div>
+    </div>
+{% endblock %}

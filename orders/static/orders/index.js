@@ -4,7 +4,13 @@ document.addEventListener('DOMContentLoaded',() => {
     let addbuttons = document.getElementsByClassName('addbutton');
     [...addbuttons].forEach((addbutton) => {
         addbutton.onclick = () => {
-            fetch(`/item/${addbutton.dataset.item}/${addbutton.getAttribute('id').replace( /^\D+/g, '')}`)
+            fetch(`/item/${addbutton.dataset.item}/${addbutton.getAttribute('id').replace( /^\D+/g, '')}`, {
+                method: "GET",
+                credentials: 'same-origin',
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 let modalcontentdiv = loadcartform(data, addbutton);
