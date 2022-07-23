@@ -11,7 +11,7 @@ PIZZA_TYPES = [
 ]
 
 ORDER_STATUS = [
-    (0, 'placed'),
+    (0, 'pending'),
     (1, 'completed')
 ]
 

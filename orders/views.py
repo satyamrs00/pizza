@@ -238,6 +238,8 @@ def item(request, thing, id):
 def cart(request):
     c = Cart.objects.get(user=request.user)
     items = list(chain(c.pizza.all(), c.sub.all(), c.pasta.all(), c.salad.all(), c.platter.all()))
+    print(c.platter.all())
+    print(items)
     return render(request, 'orders/cart.html', {
         "items": items,
         "cart": c

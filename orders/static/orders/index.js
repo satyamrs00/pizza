@@ -38,11 +38,8 @@ document.addEventListener('DOMContentLoaded',() => {
                 document.getElementById('cartform').addEventListener('click', (e) => {
                     var checks = document.querySelectorAll(`.${data.extrastype}`);
                     if (nodelist_contains(checks, e.target)){
-                        console.log('hereeeee');
                         var checkedChecks = document.querySelectorAll(`.${data.extrastype}:checked`);
-                        console.log(checkedChecks);
                         eprice = checkedChecks.length * parseFloat(data.extrasprice[0]);
-                        console.log(eprice);
                         confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
                     }
                 })
@@ -56,6 +53,14 @@ document.addEventListener('DOMContentLoaded',() => {
                         modaldiv.removeChild(modaldiv.lastChild);
                     }
                 });
+                window.onclick = (event) => {
+                    if (event.target == modaldiv) {
+                        modaldiv.style.display = "none";
+                        while(modaldiv.firstChild){
+                            modaldiv.removeChild(modaldiv.lastChild);
+                        }
+                    }
+                }
 
                 if(data.extrastype === "Toppings"){
                     var checks = document.querySelectorAll(`.${data.extrastype}`);
