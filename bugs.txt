@@ -1,3 +1,4 @@
-KNOWN: (1) adding more than one elements of same kind actually adds only one element but increases cart price
+FIXED: (1) adding more than one elements of same kind actually adds only one element but increases cart price
 POSSIBLE SOLN : creating a custom m2m relation with weight to represent number of items of the same kind
-FIXED: 
+SOLN : created custom m2m relational tables using 'through' fields 
+KNOWN: (2) adding more than one items with no toppings/addons creates new combination for each time

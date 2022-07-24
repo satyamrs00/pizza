@@ -3,3 +3,6 @@ DONE: (2) modal box should be closed if clicked outside of it
 TODO: (3) make nav bar vertical like in wiki
 TODO: (4) you could replace toppings field in pizzacombination and addons field in subcombination to extras and reduce html and views.py (item view for post) code
 TODO: (5) dont show a menu item if the price is 0
+TODO: (6) sort item in cart by price or datetime added
+DONE: (7) if bug1 gets fixed with through fields , add through fields on order model
+TODO: (8) setup error message to show if size or no. of toppings is invalid by changing form submit to fetch call

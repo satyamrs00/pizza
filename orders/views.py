@@ -7,7 +7,7 @@ import decimal
 from itertools import chain
 
 from orders.forms import RegistrationForm, LoginForm
-from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination
+from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M
 
 # Create your views here.
 def index(request):
@@ -78,23 +78,33 @@ def logout_view(request):
 def item(request, thing, id):
     if request.method == "PATCH":
         thingcls = globals()[thing]
-        print(thingcls)
         i = thingcls.objects.get(id=id)
-        print(thing)
         if thing in ['PizzaCombination', 'SubCombination', 'PlatterCombination']:
             thing = thing[:-11]
-            print(thing)
 
         c = Cart.objects.get(user=request.user)
-        getattr(c, thing.lower()).remove(i)
+        
+        thingcartrel = "Cart" + thing
+        thingcartrel = globals()[thingcartrel]            
+        
+        for item in thingcartrel.objects.filter(cart=c):
+            if getattr(item, thing.lower()) == i:
+                r = item
+        
+        if r.quantity > 1:
+            r.quantity -= 1
+            r.save()
+        else:
+            r.delete()
+
         c.price -= i.price
         c.save()
         return JsonResponse({
             "message": "successfully removed"
         })
 
-    thingcls = thing.capitalize()
-    thingcls = globals()[thingcls]        
+    cthing = thing.capitalize()
+    thingcls = globals()[cthing]        
 
     if request.method == "POST":
         if thing in ['pizza', 'sub', 'platter']:
@@ -168,7 +178,25 @@ def item(request, thing, id):
             c = Cart(user=request.user)
             c.save()
 
-        getattr(c, thing).add(p)
+        thingcartrel = "Cart" + cthing
+        thingcartrel = globals()[thingcartrel]
+        
+        try:
+            r = None
+            for item in thingcartrel.objects.filter(cart = c):
+                if getattr(item, thing) == p:
+                    r = item
+            if not r:
+                r = thingcartrel(cart=c)
+                setattr(r, thing, p)
+                r.save()                 
+        except:
+            r = thingcartrel(cart=c)
+            setattr(r, thing, p)
+            r.save() 
+
+        r.quantity +=1
+        r.save()
 
         c.price += p.price
         c.save()
@@ -238,9 +266,10 @@ def item(request, thing, id):
 def cart(request):
     c = Cart.objects.get(user=request.user)
     items = list(chain(c.pizza.all(), c.sub.all(), c.pasta.all(), c.salad.all(), c.platter.all()))
-    print(c.platter.all())
-    print(items)
+    quantities = []
+    for item in list(chain(c.cartpizza_set.all(), c.cartsub_set.all(), c.cartpasta_set.all(), c.cartsalad_set.all(), c.cartplatter_set.all())):
+        quantities.append(item.quantity)
     return render(request, 'orders/cart.html', {
-        "items": items,
+        "items": zip(items, quantities),
         "cart": c
     })

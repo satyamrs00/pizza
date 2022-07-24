@@ -1,4 +1,5 @@
 from cgi import print_exception
+from enum import auto
 from tkinter import CASCADE
 from unicodedata import name
 from django.db import models
@@ -71,19 +72,64 @@ class PlatterCombination(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
-    pizza = models.ManyToManyField(PizzaCombination, related_name="orders")
-    sub = models.ManyToManyField(SubCombination, related_name="orders")
-    pasta = models.ManyToManyField(Pasta, related_name="orders")
-    salad = models.ManyToManyField(Salad, related_name="orders")
-    platter = models.ManyToManyField(PlatterCombination, related_name="orders")
-    status = models.IntegerField(choices=ORDER_STATUS, default=0)
+    pizza = models.ManyToManyField(PizzaCombination, through='OrderPizza', related_name="orders")
+    sub = models.ManyToManyField(SubCombination, through='OrderSub', related_name="orders")
+    pasta = models.ManyToManyField(Pasta, through='OrderPasta', related_name="orders")
+    salad = models.ManyToManyField(Salad, through='OrderSalad', related_name="orders")
+    platter = models.ManyToManyField(PlatterCombination, through='OrderPlatter', related_name="orders")
+    placedtime = models.DateTimeField(auto_now_add=True)
+    completedtime = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart")
-    pizza = models.ManyToManyField(PizzaCombination, related_name="cart")
-    sub = models.ManyToManyField(SubCombination, related_name="cart")
-    pasta = models.ManyToManyField(Pasta, related_name="cart")
-    salad = models.ManyToManyField(Salad, related_name="cart")
-    platter = models.ManyToManyField(PlatterCombination, related_name="cart")
+    pizza = models.ManyToManyField(PizzaCombination, through='CartPizza', related_name="cart")
+    sub = models.ManyToManyField(SubCombination, through='CartSub', related_name="cart")
+    pasta = models.ManyToManyField(Pasta, through='CartPasta', related_name="cart")
+    salad = models.ManyToManyField(Salad, through='CartSalad', related_name="cart")
+    platter = models.ManyToManyField(PlatterCombination, through='CartPlatter', related_name="cart")
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
+
+class WeightedM2M(models.Model):
+    datetime_added = models.DateTimeField(auto_now_add=True)
+    quantity = models.IntegerField(default=0)
+
+class CartPizza(WeightedM2M):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    pizza = models.ForeignKey(PizzaCombination, on_delete=models.CASCADE)
+
+class CartSub(WeightedM2M):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    sub = models.ForeignKey(SubCombination, on_delete=models.CASCADE)
+
+class CartPasta(WeightedM2M):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    pasta = models.ForeignKey(Pasta, on_delete=models.CASCADE)
+
+class CartSalad(WeightedM2M):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    salad = models.ForeignKey(Salad, on_delete=models.CASCADE)
+
+class CartPlatter(WeightedM2M):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    platter = models.ForeignKey(PlatterCombination, on_delete=models.CASCADE)
+
+class OrderPizza(WeightedM2M):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    pizza = models.ForeignKey(PizzaCombination, on_delete=models.CASCADE)
+
+class OrderSub(WeightedM2M):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    sub = models.ForeignKey(SubCombination, on_delete=models.CASCADE)
+
+class OrderPasta(WeightedM2M):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    pasta = models.ForeignKey(Pasta, on_delete=models.CASCADE)
+
+class OrderSalad(WeightedM2M):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    salad = models.ForeignKey(Salad, on_delete=models.CASCADE)
+
+class OrderPlatter(WeightedM2M):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    platter = models.ForeignKey(PlatterCombination, on_delete=models.CASCADE)

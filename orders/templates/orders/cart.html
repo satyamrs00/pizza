@@ -8,11 +8,11 @@
 
 {% block body %}
     <div>
-        {% for item in items %}
+        {% for item, quantity in items %}
             <div>
                 <div>
                     {{ item.name }} 
-                    {{ item.pizza.name }}
+                    {{ item.pizza.name }} 
                     {{ item.sub.name }}
                     {{ item.platter.name }}
                 </div>
@@ -24,8 +24,9 @@
                         {{ extra.name }}
                     {% endfor %}
                 </div>
-                <div>{{ item.size }}</div>
-                <div>{{ item.price }}</div>
+                <div>Size : {{ item.size }}</div>
+                <div>Quantity : {{ quantity }}</div>
+                <div>Price : {{ item.price }} * {{ quantity }}</div>
                 <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>
             </div>
             <hr>
