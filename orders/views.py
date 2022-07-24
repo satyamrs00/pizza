@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 import decimal
 from itertools import chain
+from django.contrib.auth.decorators import login_required
 
 from orders.forms import RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M
@@ -13,18 +14,14 @@ from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pa
 def index(request):
     rpizzas = Pizza.objects.filter(type=0)
     spizzas = Pizza.objects.filter(type=1)
-    toppings = Topping.objects.all()
     subs = Sub.objects.all()
-    addons = Addon.objects.all()
     pastas = Pasta.objects.all()
     salads = Salad.objects.all()
     platters = Platter.objects.all()
     return render(request, 'orders/index.html', {
         "rpizzas": rpizzas,
         "spizzas": spizzas,
-        "toppings": toppings,
         "subs": subs,
-        "addons": addons,
         "pastas": pastas,
         "salads": salads,
         "platters": platters,    
@@ -55,8 +52,6 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        print(username) 
-        print(password)
         user = authenticate(request, username=username, password=password)
         if user is not None:
             print('here')
@@ -263,13 +258,20 @@ def item(request, thing, id):
             "price": p.price
         })
 
+@login_required
 def cart(request):
     c = Cart.objects.get(user=request.user)
+    if request.method == "PUT":
+        return JsonResponse({
+            "id": c.id,
+            "price": c.price
+        })
+    
     items = list(chain(c.pizza.all(), c.sub.all(), c.pasta.all(), c.salad.all(), c.platter.all()))
     quantities = []
     for item in list(chain(c.cartpizza_set.all(), c.cartsub_set.all(), c.cartpasta_set.all(), c.cartsalad_set.all(), c.cartplatter_set.all())):
         quantities.append(item.quantity)
     return render(request, 'orders/cart.html', {
-        "items": zip(items, quantities),
+        "items": list(zip(items, quantities)),
         "cart": c
     })

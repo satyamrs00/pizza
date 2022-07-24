@@ -16,6 +16,13 @@ ORDER_STATUS = [
     (1, 'completed')
 ]
 
+PAYMENT_MODES = [
+    (0, 'Credit Card'),
+    (1, 'Debit Card'),
+    (2, 'Net Banking'),
+    (3, 'Cash on Delivery')
+]
+
 # Create your models here.
 class Pizza(models.Model):
     name = models.CharField(max_length=200)
@@ -41,9 +48,15 @@ class Pasta(models.Model):
     name = models.CharField(max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def getname(self):
+        return f'{self.name} Pasta'
+
 class Salad(models.Model):
     name = models.CharField(max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10)
+
+    def getname(self):
+        return f'{self.name} Salad'
 
 class Platter(models.Model):
     name = models.CharField(max_length=200)
@@ -59,16 +72,25 @@ class PizzaCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getname(self):
+        return f'{self.pizza.name} {PIZZA_TYPES[self.pizza.type][1]} Pizza'
+
 class SubCombination(models.Model):
     sub = models.ForeignKey(Sub, on_delete=models.CASCADE, related_name="combinations")
     addons = models.ManyToManyField(Addon)
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getname(self):
+        return f'{self.sub.name} Sub'
+
 class PlatterCombination(models.Model):
     platter = models.ForeignKey(Platter, on_delete=models.CASCADE, related_name="combinations")
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
+    
+    def getname(self):
+        return f'{self.platter.name} Dinner Platter'
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
@@ -79,6 +101,8 @@ class Order(models.Model):
     platter = models.ManyToManyField(PlatterCombination, through='OrderPlatter', related_name="orders")
     placedtime = models.DateTimeField(auto_now_add=True)
     completedtime = models.DateTimeField(auto_now_add=True)
+    payment_mode = models.IntegerField(choices=PAYMENT_MODES)
+    address = models.ForeignKey('Address', on_delete=models.SET("(deleted address)"))
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
 class Cart(models.Model):
@@ -133,3 +157,7 @@ class OrderSalad(WeightedM2M):
 class OrderPlatter(WeightedM2M):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     platter = models.ForeignKey(PlatterCombination, on_delete=models.CASCADE)
+
+class Address(models.Model):
+    address = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

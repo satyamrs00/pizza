@@ -8,13 +8,12 @@
 
 {% block body %}
     <div>
+        <div id="modal" class="modal">
+        </div>
         {% for item, quantity in items %}
             <div>
                 <div>
-                    {{ item.name }} 
-                    {{ item.pizza.name }} 
-                    {{ item.sub.name }}
-                    {{ item.platter.name }}
+                    {{ item.getname }} 
                 </div>
                 <div>
                     {% for extra in item.toppings.all %}
@@ -26,13 +25,18 @@
                 </div>
                 <div>Size : {{ item.size }}</div>
                 <div>Quantity : {{ quantity }}</div>
-                <div>Price : {{ item.price }} * {{ quantity }}</div>
+                <div>Price : {% multiply item.price quantity %}</div>
                 <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>
             </div>
             <hr>
         {% endfor %}
         <div>
             Total Price : {{ cart.price }}
+        </div>
+        <div>
+            {% if items|length > 0 %}
+                <button id="placeorder">Place Order({{items|length}} items)</button>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
