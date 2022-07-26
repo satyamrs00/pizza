@@ -6,25 +6,13 @@ from django.db import models
 from django.forms import CharField
 from django.contrib.auth.models import AbstractUser
 
-PIZZA_TYPES = [
-    (0, 'Regular'),
-    (1, 'Sicilian')
-]
-
-ORDER_STATUS = [
-    (0, 'pending'),
-    (1, 'completed')
-]
-
-PAYMENT_MODES = [
-    (0, 'Credit Card'),
-    (1, 'Debit Card'),
-    (2, 'Net Banking'),
-    (3, 'Cash on Delivery')
-]
-
 # Create your models here.
 class Pizza(models.Model):
+    PIZZA_TYPES = [
+        (0, 'Regular'),
+        (1, 'Sicilian')
+    ]
+
     name = models.CharField(max_length=200)
     type = models.IntegerField(choices=PIZZA_TYPES, default=0)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
@@ -73,7 +61,7 @@ class PizzaCombination(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
     def getname(self):
-        return f'{self.pizza.name} {PIZZA_TYPES[self.pizza.type][1]} Pizza'
+        return f'{self.pizza.name} {Pizza.PIZZA_TYPES[self.pizza.type][1]} Pizza'
 
 class SubCombination(models.Model):
     sub = models.ForeignKey(Sub, on_delete=models.CASCADE, related_name="combinations")
@@ -93,6 +81,14 @@ class PlatterCombination(models.Model):
         return f'{self.platter.name} Dinner Platter'
 
 class Order(models.Model):
+    PAYMENT_MODES = [
+        (0, 'UPI'),
+        (1, 'Wallets'),
+        (2, 'Credit / Debit / ATM Card'),
+        (3, 'Net Banking'),
+        (4, 'Cash on Delivery')
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     pizza = models.ManyToManyField(PizzaCombination, through='OrderPizza', related_name="orders")
     sub = models.ManyToManyField(SubCombination, through='OrderSub', related_name="orders")
@@ -100,7 +96,7 @@ class Order(models.Model):
     salad = models.ManyToManyField(Salad, through='OrderSalad', related_name="orders")
     platter = models.ManyToManyField(PlatterCombination, through='OrderPlatter', related_name="orders")
     placedtime = models.DateTimeField(auto_now_add=True)
-    completedtime = models.DateTimeField(auto_now_add=True)
+    completedtime = models.DateTimeField(null=True)
     payment_mode = models.IntegerField(choices=PAYMENT_MODES)
     address = models.ForeignKey('Address', on_delete=models.SET("(deleted address)"))
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)

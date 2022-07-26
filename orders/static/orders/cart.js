@@ -52,7 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            
+            document.getElementById('confirmorder').addEventListener('click', (event) => {
+                console.log("here");
+                fetch('/cart', {
+                    method: "POST",
+                    credentials: 'same-origin',
+                    headers: {
+                        "X-CSRFToken": getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        address : document.querySelector('textarea[name="address"]').value,
+                        paymethod : document.querySelector('input[name="paymethod"]:checked').value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    window.location.replace(data.redirect);
+                });
+            });
         });
     });
 });
@@ -66,18 +84,20 @@ function loadConfirmation(data) {
     let pricediv = document.createElement('div');
     pricediv.innerHTML = `Total price for this order is ${data.price}`;
     let addresslabel = document.createElement('label');
-    addresslabel.innerHTML = 'Address : <br><textarea name="address" cols="30" rows="10"></textarea>'
+    addresslabel.innerHTML = 'Address : <br><textarea id="addresstext" name="address" cols="30" rows="10"></textarea>'
     let paymenth = document.createElement('div');
     paymenth.innerHTML = 'Choose a payment method : ';
     let paymentdiv = document.createElement('div');
     let label1 = document.createElement('label');
-    label1.innerHTML = '<input type="radio" name="paymethod" value="creditcard">Credit Cart';
+    label1.innerHTML = '<input type="radio" name="paymethod" value="0">UPI';
     let label2 = document.createElement('label');
-    label2.innerHTML = '<input type="radio" name="paymethod" value="debitcard">Debit Cart';
+    label2.innerHTML = '<input type="radio" name="paymethod" value="1">Wallets';
     let label3 = document.createElement('label');
-    label3.innerHTML = '<input type="radio" name="paymethod" value="netbanking">Net Banking';
+    label3.innerHTML = '<input type="radio" name="paymethod" value="2">Credit / Debit / ATM Card';
     let label4 = document.createElement('label');
-    label4.innerHTML = '<input type="radio" name="paymethod" value="cod">Cash on Delivery';
+    label4.innerHTML = '<input type="radio" name="paymethod" value="3">Net Banking';
+    let label5 = document.createElement('label');
+    label5.innerHTML = '<input type="radio" name="paymethod" value="4">Cash on Delivery';
     paymentdiv.appendChild(label1);
     paymentdiv.appendChild(label2);
     paymentdiv.appendChild(label3);

@@ -1,1 +1,4 @@
+Django
 django[bcrypt]
+python-dotenv
+python-decouple

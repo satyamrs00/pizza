@@ -1,4 +1,6 @@
+from ctypes import addressof
 import re
+import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +10,7 @@ from itertools import chain
 from django.contrib.auth.decorators import login_required
 
 from orders.forms import RegistrationForm, LoginForm
-from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M
+from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order
 
 # Create your views here.
 def index(request):
@@ -261,6 +263,45 @@ def item(request, thing, id):
 @login_required
 def cart(request):
     c = Cart.objects.get(user=request.user)
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+        if not data.get('address') or data.get("address") == "":
+            return JsonResponse({
+                "error": "No address provided"
+            })
+        if not data.get('paymethod') or data.get("paymethod") == "":
+            return JsonResponse({
+                "error": "Payment method not selected"
+            })
+
+        a = Address(address=data.get('address'), user = request.user)
+        a.save()
+
+        o = Order(user=request.user, payment_mode=data.get('paymethod'), address=a, price=c.price)
+        o.save()
+
+        things=["pizza", "sub", "pasta", "salad", "platter"]
+
+        for thing in things:
+            carts = "Cart" + thing.capitalize()
+            cartc = globals()[carts]
+            orders = "Order" + thing.capitalize()
+            orderc = globals()[orders]
+            
+            co = cartc.objects.filter(cart=c)
+            for oneco in co:
+                oo = orderc(order=o)
+                setattr(oo, thing, getattr(oneco, thing))
+                oo.save()
+                oo.quantity += 1
+                oo.save()
+                oneco.delete()
+                c.price = 0
+        
+        return JsonResponse({
+            "success": "order placed",
+            "redirect": "/"
+        })
     if request.method == "PUT":
         return JsonResponse({
             "id": c.id,
