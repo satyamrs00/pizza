@@ -327,9 +327,18 @@ def orders(request):
         items = list(zip(items, quantities))
         allitems.append(items)
     
-    print(allitems)
-    print(orders)
-    print(list(zip(allitems, orders)))
     return render(request, 'orders/orders.html', {
         "allitems": list(zip(allitems, orders))
+    })
+
+def order(request, order_id):
+    o = Order.objects.get(id=order_id)
+    items = list(chain(o.pizza.all(), o.sub.all(), o.pasta.all(), o.salad.all(), o.platter.all()))
+    quantities = []
+    for item in list(chain(o.orderpizza_set.all(), o.ordersub_set.all(), o.orderpasta_set.all(), o.ordersalad_set.all(), o.orderplatter_set.all())):
+        quantities.append(item.quantity)
+
+    return render(request, "orders/order.html", {
+        "o" : o,
+        "items": list(zip(items, quantities))
     })

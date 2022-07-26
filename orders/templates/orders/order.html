@@ -1,0 +1,38 @@
+{% extends "orders/layout.html" %}
+{% load tags %}
+
+{% block body %}
+    <div>
+        Reference id : {{o.id}} <br>
+        Items:<br>
+        {% for item, quantity in items %}
+            <div>
+                {{item.getname}}
+                {{quantity}}
+                {% multiply item.price quantity %}
+            </div>
+            <div>
+                {% for extra in item.toppings.all %}
+                    {{ extra.name }}
+                {% endfor %}
+                {% for extra in item.addons.all %}
+                    {{ extra.name }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div>Total order amount : {{o.price}}</div>
+        <div>
+            {% if o.completedtime %}
+                Order was delivered on {{o.completedtime|date:"d F Y H:i"}}
+            {% else %}
+                Order is still pending
+            {% endif %}
+        </div>
+        <div>
+            Delivery to : <br>
+            {{user.first_name}} {{user.last_name}} <br>
+            {{o.address.address}}
+        </div>
+        <div>Order made on : {{o.placedtime|date:"d F Y H:i"}}</div>
+    </div>
+{% endblock %}
