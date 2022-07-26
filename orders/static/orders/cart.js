@@ -102,6 +102,7 @@ function loadConfirmation(data) {
     paymentdiv.appendChild(label2);
     paymentdiv.appendChild(label3);
     paymentdiv.appendChild(label4);
+    paymentdiv.appendChild(label5);
     let button = document.createElement('button');
     button.setAttribute('id', 'confirmorder');
     button.innerHTML = 'Confirm Order';

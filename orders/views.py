@@ -1,5 +1,3 @@
-from ctypes import addressof
-import re
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -293,10 +291,11 @@ def cart(request):
                 oo = orderc(order=o)
                 setattr(oo, thing, getattr(oneco, thing))
                 oo.save()
-                oo.quantity += 1
+                oo.quantity = oneco.quantity
                 oo.save()
                 oneco.delete()
                 c.price = 0
+                c.save()
         
         return JsonResponse({
             "success": "order placed",
@@ -315,4 +314,22 @@ def cart(request):
     return render(request, 'orders/cart.html', {
         "items": list(zip(items, quantities)),
         "cart": c
+    })
+
+def orders(request):
+    orders = Order.objects.filter(user=request.user)
+    allitems = []
+    for o in orders:
+        items = list(chain(o.pizza.all(), o.sub.all(), o.pasta.all(), o.salad.all(), o.platter.all()))
+        quantities = []
+        for item in list(chain(o.orderpizza_set.all(), o.ordersub_set.all(), o.orderpasta_set.all(), o.ordersalad_set.all(), o.orderplatter_set.all())):
+            quantities.append(item.quantity)
+        items = list(zip(items, quantities))
+        allitems.append(items)
+    
+    print(allitems)
+    print(orders)
+    print(list(zip(allitems, orders)))
+    return render(request, 'orders/orders.html', {
+        "allitems": list(zip(allitems, orders))
     })

@@ -1,0 +1,26 @@
+{% extends "orders/layout.html" %}
+{% load tags %}
+
+{% block body %}
+    <h2>Orders</h2>
+    <hr>
+    <div>
+        {% for items, order in allitems %}
+            <a href="{% url 'order' order.id %}">
+                <div>
+                    {% for item, quantity in items %}
+                        {{item.getname}} × {{quantity}} {% multiply item.price quantity %}
+                        <br>
+                    {% endfor %}
+                    {% if order.completed_time %}
+                        Completed
+                    {% else %}
+                        Pending
+                    {% endif %}
+                    {{order.price}}
+                    <hr>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
