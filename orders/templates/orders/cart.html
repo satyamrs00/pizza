@@ -20,12 +20,17 @@
                 <div>
                     {% for extra in item.toppings.all %}
                         {{ extra.name }}
+                        {% if not forloop.last %}
+                            ,
+                        {% endif %}
                     {% endfor %}
                     {% for extra in item.addons.all %}
                         {{ extra.name }}
                     {% endfor %}
                 </div>
-                <div>Size : {{ item.size }}</div>
+                {% if item.size %}
+                    <div>Size : {{ item.size }}</div>
+                {% endif %}
                 <div>Quantity : {{ quantity }}</div>
                 <div>Price : {% multiply item.price quantity %}</div>
                 <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>

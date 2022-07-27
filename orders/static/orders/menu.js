@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded',() => {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 let modalcontentdiv = loadcartform(data, addbutton);
                 let modaldiv = document.getElementById('modal');
                 modaldiv.appendChild(modalcontentdiv);
@@ -35,14 +36,33 @@ document.addEventListener('DOMContentLoaded',() => {
                     pprice = parseFloat(data.price);
                 }
 
+                let before = document.querySelectorAll(`input[name="${data.extrastype}"]:checked`).length
                 document.getElementById('cartform').addEventListener('click', (e) => {
                     var checks = document.querySelectorAll(`.${data.extrastype}`);
                     if (nodelist_contains(checks, e.target)){
-                        var checkedChecks = document.querySelectorAll(`.${data.extrastype}:checked`);
-                        eprice = checkedChecks.length * parseFloat(data.extrasprice[0]);
+                        let after = document.querySelectorAll(`input[name="${data.extrastype}"]:checked`).length
+                        let extraid = parseInt(e.target.value.replace( /^\D+/g, ''));
+                        var tmp = 0;
+                        data.extras.forEach(extra => tmp = extra.id === extraid ? parseFloat(extra.price) : tmp);
+                        if (before < after){
+                            eprice += tmp;
+                        } else if (before > after){
+                            eprice -= tmp;
+                        }
+                        before = after;
                         confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
                     }
-                })
+                });
+                document.getElementById('cartform').onsubmit = () => {
+                    if (data.sizeoptions === true && document.querySelector('input[name="size"]:checked') === null){
+                        document.getElementById('msg').innerHTML = "select a size before adding to cart";
+                        return false;
+                    }
+                    if (data.extrasoption === true && data.extrastype === "Toppings" && document.querySelectorAll(`.${data.extrastype}:checked`).length != data.extrasamount){
+                        document.getElementById('msg').innerHTML = `select ${data.extrasamount} toppings before adding to cart`;
+                        return false;
+                    }
+                }
 
                 let confirmationdiv = document.getElementById('priceconfirmation');
                 confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
@@ -129,7 +149,7 @@ function loadcartform(data, addbutton){
         if(data.extrastype === "Toppings"){
             extrah.innerHTML += `<br> select ${data.extrasamount} items`;
         }else {
-            extrah.innerHTML += `<br> select upto ${data.extrasamount} items`;
+            extrah.innerHTML += `<br>`;
         }
         form.appendChild(extrah);
 
@@ -153,6 +173,9 @@ function loadcartform(data, addbutton){
     let confirmationdiv = document.createElement('div');
     confirmationdiv.setAttribute('id', 'priceconfirmation');
     form.appendChild(confirmationdiv);
+    let msg = document.createElement('div');
+    msg.setAttribute('id', 'msg');
+    form.appendChild(msg);
     let submitbutton = document.createElement('input');
     submitbutton.setAttribute('type', 'submit');
     submitbutton.setAttribute('value', 'Save');
@@ -194,3 +217,14 @@ function nodelist_contains(nodelist, obj) {
   
     return false;
 } 
+
+function getcheckedboxes(checkboxname){
+    let checkboxes = document.getElementsByName(checkboxname);
+    let checkedcheckboxes = [];
+    for(let i = 0; i < checkboxes.length ; i++){
+        if(checkboxes[i].checked){
+            checkedcheckboxes.push(checkboxes[i]);
+        }
+    }
+    return checkedcheckboxes;
+}

@@ -27,7 +27,7 @@ class Sub(models.Model):
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 
     def getname(self):
-        return f'{self.sub.name} Sub'
+        return f'{self.name} Sub'
 
 class Addon(models.Model):
     name = models.CharField(max_length=200)
@@ -53,7 +53,7 @@ class Platter(models.Model):
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 
     def getname(self):
-        return f'{self.platter.name} Dinner Platter'
+        return f'{self.name} Dinner Platter'
 
 class User(AbstractUser):
     pass

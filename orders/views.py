@@ -76,6 +76,8 @@ def logout_view(request):
 
 def item(request, thing, id):
     if request.method == "PATCH":
+        """remove the item from cart"""
+
         thingcls = globals()[thing]
         i = thingcls.objects.get(id=id)
         if thing in ['PizzaCombination', 'SubCombination', 'PlatterCombination']:
@@ -106,6 +108,8 @@ def item(request, thing, id):
     thingcls = globals()[cthing]        
 
     if request.method == "POST":
+        """add the item to cart"""
+
         if thing in ['pizza', 'sub', 'platter']:
             if not request.POST.get('size'):
                 return HttpResponse('Select Size')
@@ -117,7 +121,14 @@ def item(request, thing, id):
                 return HttpResponse('Select proper number of toppings')
                 
             try:
-                p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'), toppings__in= [int(e[8:]) for e in request.POST.getlist('Toppings')])[0]
+                print(request.POST.getlist('Toppings'))
+                print([int(e[8:]) for e in request.POST.getlist('Toppings')])
+
+                # this if statement is to tackle bug2
+                if thingcls.objects.get(id=id).extrascount == 0:
+                    p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'))[0]
+                else:
+                    p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'), toppings__in= [int(e[8:]) for e in request.POST.getlist('Toppings')])[0]
                 print(p)
             except IndexError:
                 p = PizzaCombination(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'))
@@ -136,7 +147,11 @@ def item(request, thing, id):
 
         elif thing == 'sub':
             try:
-                p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'), addons__in= [int(e[7:]) for e in request.POST.getlist('Add-ons')])[0]
+                # this if statement is to tackle bug2
+                if request.POST.get('Add-ons') == []:
+                    p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'))
+                else:
+                    p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'), addons__in= [int(e[7:]) for e in request.POST.getlist('Add-ons')])[0]
                 print(p)
             except IndexError:
                 p = SubCombination(sub=thingcls.objects.get(id=id), size=request.POST.get('size'))
@@ -217,6 +232,9 @@ def item(request, thing, id):
             t = Topping.objects.all()
             extrasamount = p.extrascount
             extrastype = 'Toppings'
+            if p.extrascount == 0:
+                extrasoption = False
+
         else:
             t = Addon.objects.all()
             extrastype = 'Add-ons'
