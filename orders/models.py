@@ -14,6 +14,9 @@ class Pizza(models.Model):
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
     extrascount = models.IntegerField(default=0)
 
+    def getname(self):
+        return f"{self.name} {Pizza.PIZZA_TYPES[self.type][1]} Pizza"
+
 class Topping(models.Model):
     name = models.CharField(max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
@@ -22,6 +25,9 @@ class Sub(models.Model):
     name = models.CharField(max_length=200)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
+
+    def getname(self):
+        return f'{self.sub.name} Sub'
 
 class Addon(models.Model):
     name = models.CharField(max_length=200)
@@ -45,6 +51,9 @@ class Platter(models.Model):
     name = models.CharField(max_length=200)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
+
+    def getname(self):
+        return f'{self.platter.name} Dinner Platter'
 
 class User(AbstractUser):
     pass

@@ -139,11 +139,11 @@ function loadcartform(data, addbutton){
             einput.setAttribute('type', 'checkbox');
             einput.classList.add(data.extrastype);
             einput.setAttribute('name', data.extrastype);
-            einput.setAttribute('value', `${data.extrastype}${data.extras[i]}`);
+            einput.setAttribute('value', `${data.extrastype}${data.extras[i].id}`);
             elabel.appendChild(einput);
-            elabel.innerHTML += data.extrasname[i];
+            elabel.innerHTML += data.extras[i].name;
             let pricespan = document.createElement('span');
-            pricespan.innerHTML = data.extrasprice[i];
+            pricespan.innerHTML = data.extras[i].price;
             elabel.appendChild(pricespan);
             let br = document.createElement('br');
             form.appendChild(elabel);

@@ -201,6 +201,7 @@ def item(request, thing, id):
         c.save()
         return redirect('menu')
 
+    """get information about the item to load the form to add to cart"""
     p = thingcls.objects.get(id=id)
 
     try:
@@ -222,23 +223,21 @@ def item(request, thing, id):
             extrasamount = Addon.objects.count()
 
         extras = []
-        extrasname = []
-        extrasprice = []
         for item in t:
-            extras.append(item.id)
-            extrasname.append(item.name)
-            extrasprice.append(item.price)
+            extras.append({
+                "id" : item.id,
+                "name" : item.name,
+                "price" : item.price
+            })
 
         return JsonResponse({
             "id": p.id,
-            "name": p.name,
+            "name": p.getname(),
             "sizeoptions": sizeoptions,
             "extrasoption": extrasoption,
             "smallprice": p.smallprice,
             "largeprice": p.largeprice,
             "extras": extras,
-            "extrasname": extrasname,
-            "extrasprice": extrasprice,
             "extrastype": extrastype,
             "extrasamount": extrasamount
         })
@@ -246,7 +245,7 @@ def item(request, thing, id):
     if extrasoption == False and sizeoptions == True:
         return JsonResponse({
             "id": p.id,
-            "name": p.name,
+            "name": p.getname(),
             "sizeoptions": sizeoptions,
             "extrasoption": extrasoption,
             "smallprice": p.smallprice,
@@ -256,7 +255,7 @@ def item(request, thing, id):
     if extrasoption == False and sizeoptions == False:
         return JsonResponse({
             "id": p.id,
-            "name": p.name,
+            "name": p.getname(),
             "sizeoptions": sizeoptions,
             "extrasoption": extrasoption,
             "price": p.price
