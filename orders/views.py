@@ -1,4 +1,5 @@
 import json
+import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -12,13 +13,16 @@ from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pa
 
 # Create your views here.
 def index(request):
+    return render(request, "orders/index.html")
+
+def menu(request):
     rpizzas = Pizza.objects.filter(type=0)
     spizzas = Pizza.objects.filter(type=1)
     subs = Sub.objects.all()
     pastas = Pasta.objects.all()
     salads = Salad.objects.all()
     platters = Platter.objects.all()
-    return render(request, 'orders/index.html', {
+    return render(request, 'orders/menu.html', {
         "rpizzas": rpizzas,
         "spizzas": spizzas,
         "subs": subs,
@@ -195,7 +199,7 @@ def item(request, thing, id):
 
         c.price += p.price
         c.save()
-        return redirect('index')
+        return redirect('menu')
 
     p = thingcls.objects.get(id=id)
 
