@@ -150,7 +150,7 @@ DATABASES['default'].update(db_from_env)
 
 WHITENOISE_USE_FINDERS = True
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE =  'django.contrib.staticfiles.storage.StaticFilesStorage' 
 
 SECURE_HSTS_SECONDS = 31536000
 
