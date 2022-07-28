@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
-from decouple import config
+from decouple import config, UndefinedValueError
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -136,32 +136,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 AUTH_USER_MODEL = 'orders.User'
-
 CSRF_COOKIE_SECURE = True
-
 SESSION_COOKIE_SECURE = True
-
 SECURE_SSL_REDIRECT = True
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 WHITENOISE_USE_FINDERS = True
-
 STATICFILES_STORAGE =  'django.contrib.staticfiles.storage.StaticFilesStorage' 
-
 SECURE_HSTS_SECONDS = 31536000
-
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
 SECURE_HSTS_PRELOAD = True
-print('prod env \n\n\n\n\n\n\n\n')
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
-if config('DJANGO_DEVELOPMENT'):
-    print('dev env \n\n\n\n\n\n\n\n')
+try:
+    config('DJANGO_DEVELOPMENT')
     from .settings_dev import *
     INSTALLED_APPS.remove('whitenoise.runserver_nostatic')
     MIDDLEWARE.remove('whitenoise.middleware.WhiteNoiseMiddleware')
+except UndefinedValueError:
+    pass
