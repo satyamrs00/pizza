@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'pizza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': BASE_DIR / 'pizzadb',
-        'USER': 'satyam',
+        'NAME': 'pizzadb',
+        'USER': 'postgres',
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': '127:0:0:1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -157,3 +157,11 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 SECURE_HSTS_PRELOAD = True
+print('prod env \n\n\n\n\n\n\n\n')
+
+# Override production variables if DJANGO_DEVELOPMENT env variable is set
+if config('DJANGO_DEVELOPMENT'):
+    print('dev env \n\n\n\n\n\n\n\n')
+    from .settings_dev import *
+    INSTALLED_APPS.remove('whitenoise.runserver_nostatic')
+    MIDDLEWARE.remove('whitenoise.middleware.WhiteNoiseMiddleware')
