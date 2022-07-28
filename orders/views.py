@@ -152,7 +152,6 @@ def item(request, thing, id):
                     p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 else:
                     p = SubCombination.objects.filter(sub=thingcls.objects.get(id=id), size=request.POST.get('size'), addons__in= [int(e[7:]) for e in request.POST.getlist('Add-ons')])[0]
-                print(p)
             except IndexError:
                 p = SubCombination(sub=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 p.save()
@@ -221,7 +220,12 @@ def item(request, thing, id):
 
     try:
         p.smallprice
+        missingsize = None
         sizeoptions = True
+        if p.smallprice == 0.00:
+            missingsize = "small"
+        if p.largeprice == 0.00:
+            missingsize = "large"
     except AttributeError:
         sizeoptions = False
     
@@ -252,6 +256,7 @@ def item(request, thing, id):
             "id": p.id,
             "name": p.getname(),
             "sizeoptions": sizeoptions,
+            "missingsize": missingsize,
             "extrasoption": extrasoption,
             "smallprice": p.smallprice,
             "largeprice": p.largeprice,

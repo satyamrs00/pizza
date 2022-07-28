@@ -2,6 +2,10 @@
 {% load tags %}
 {% load static %}
 
+{% block title %}
+    Cart
+{% endblock %}
+
 {% block head %}
     <script type="module" src="{% static 'orders/cart.js' %}"></script>
 {% endblock %}
@@ -42,7 +46,7 @@
         </div>
         <div>
             {% if items|length > 0 %}
-                <button id="placeorder">Place Order({{items|length}} items)</button>
+                <button id="placeorder">Place Order({% countitemsbyquantity items %} items)</button>
             {% endif %}
         </div>
     </div>

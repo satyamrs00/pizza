@@ -1,5 +1,9 @@
 {% extends "orders/layout.html" %}
 
+{% block title %}
+    Login
+{% endblock %}
+
 {% block body %}
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}

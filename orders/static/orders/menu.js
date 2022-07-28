@@ -21,17 +21,26 @@ document.addEventListener('DOMContentLoaded',() => {
 
                 let pprice = 0;
                 let eprice = 0;
+                let confirmationdiv = document.getElementById('priceconfirmation');
+                confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+
                 if(data.sizeoptions === true){
-                    document.getElementById('small').addEventListener('click', () => {
-                        pprice = parseFloat(data.smallprice);
-                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
-
-                    })
-                    document.getElementById('large').addEventListener('click', () => {
+                    if (data.missingsize === null){
+                        document.getElementById('small').addEventListener('click', () => {
+                            pprice = parseFloat(data.smallprice);
+                            confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                        })
+                        document.getElementById('large').addEventListener('click', () => {
+                            pprice = parseFloat(data.largeprice);
+                            confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                        })
+                    } else if (data.missingsize === "small"){
                         pprice = parseFloat(data.largeprice);
-                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
-
-                    })
+                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;  
+                    } else if (data.missingsize === "large"){
+                        pprice = parseFloat(data.smallprice);
+                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;  
+                    }
                 } else {
                     pprice = parseFloat(data.price);
                 }
@@ -54,7 +63,7 @@ document.addEventListener('DOMContentLoaded',() => {
                     }
                 });
                 document.getElementById('cartform').onsubmit = () => {
-                    if (data.sizeoptions === true && document.querySelector('input[name="size"]:checked') === null){
+                    if (data.sizeoptions === true && data.missingsize == null && document.querySelector('input[name="size"]:checked') === null){
                         document.getElementById('msg').innerHTML = "select a size before adding to cart";
                         return false;
                     }
@@ -64,7 +73,6 @@ document.addEventListener('DOMContentLoaded',() => {
                     }
                 }
 
-                let confirmationdiv = document.getElementById('priceconfirmation');
                 confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
 
                 document.querySelector('.close').addEventListener('click', () => {
@@ -115,32 +123,47 @@ function loadcartform(data, addbutton){
     form.appendChild(csrfinput);
 
     if (data.sizeoptions === true){
-        let sizeh = document.createElement('div');
-        sizeh.innerHTML = 'Select Size';
-        let label1 = document.createElement('label');
-        let sizeinput1 = document.createElement('input');
-        sizeinput1.setAttribute('type', 'radio');
-        sizeinput1.setAttribute('name', 'size');
-        sizeinput1.setAttribute('value', 'small');
-        sizeinput1.setAttribute('id', 'small');
-        label1.appendChild(sizeinput1);
-        label1.innerHTML += 'Small';
-        let br1 = document.createElement('br');
-        let label2 = document.createElement('label');
-        let sizeinput2 = document.createElement('input');
-        sizeinput2.setAttribute('type', 'radio');
-        sizeinput2.setAttribute('name', 'size');
-        sizeinput2.setAttribute('value', 'large');
-        sizeinput2.setAttribute('id', 'large');
-        label2.appendChild(sizeinput2);
-        label2.innerHTML += 'Large';
-        let br2 = document.createElement('br');
+        if (data.missingsize === null){
+            let sizeh = document.createElement('div');
+            sizeh.innerHTML = 'Select Size';
+            let label1 = document.createElement('label');
+            let sizeinput1 = document.createElement('input');
+            sizeinput1.setAttribute('type', 'radio');
+            sizeinput1.setAttribute('name', 'size');
+            sizeinput1.setAttribute('value', 'small');
+            sizeinput1.setAttribute('id', 'small');
+            label1.appendChild(sizeinput1);
+            label1.innerHTML += 'Small';
+            let br1 = document.createElement('br');
+            let label2 = document.createElement('label');
+            let sizeinput2 = document.createElement('input');
+            sizeinput2.setAttribute('type', 'radio');
+            sizeinput2.setAttribute('name', 'size');
+            sizeinput2.setAttribute('value', 'large');
+            sizeinput2.setAttribute('id', 'large');
+            label2.appendChild(sizeinput2);
+            label2.innerHTML += 'Large';
+            let br2 = document.createElement('br');
+    
+            form.appendChild(sizeh);
+            form.appendChild(label1);
+            form.appendChild(br1);
+            form.appendChild(label2);
+            form.appendChild(br2);
+        } else {
+            let size = document.createElement('input');
+            size.setAttribute('type', 'hidden');
+            size.setAttribute('name', 'size');
 
-        form.appendChild(sizeh);
-        form.appendChild(label1);
-        form.appendChild(br1);
-        form.appendChild(label2);
-        form.appendChild(br2);
+            if(data.missingsize === "small"){
+                size.setAttribute('value', 'large');
+                size.setAttribute('id', 'large');
+            } else if (data.missingsize === "large"){
+                size.setAttribute('value', 'small');
+                size.setAttribute('id', 'small');
+            }
+            form.appendChild(size);
+        }
     }
 
     if (data.extrasoption === true){
@@ -163,7 +186,9 @@ function loadcartform(data, addbutton){
             elabel.appendChild(einput);
             elabel.innerHTML += data.extras[i].name;
             let pricespan = document.createElement('span');
-            pricespan.innerHTML = data.extras[i].price;
+            if (data.extras[i].price != 0){
+                pricespan.innerHTML = data.extras[i].price;
+            }
             elabel.appendChild(pricespan);
             let br = document.createElement('br');
             form.appendChild(elabel);

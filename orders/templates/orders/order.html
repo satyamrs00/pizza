@@ -1,6 +1,10 @@
 {% extends "orders/layout.html" %}
 {% load tags %}
 
+{% block title %}
+    Order
+{% endblock %}
+
 {% block body %}
     <div>
         Reference id : {{o.id}} <br>

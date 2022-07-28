@@ -1,6 +1,10 @@
 {% extends "orders/layout.html" %}
 {%  load static %}
 
+{% block title %}
+    Menu
+{% endblock %}
+
 {% block head %}
     <script src="{% static 'orders/menu.js' %}"></script>
 {% endblock %}
@@ -24,8 +28,8 @@
                     {% for item in rpizzas %}
                         <tr>
                             <td>{{item.name}}</td>
-                            <td>{{item.smallprice}}</td>
-                            <td>{{item.largeprice}}</td>
+                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
+                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
                             <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
                         </tr>
                     {% endfor %}
@@ -47,8 +51,8 @@
                     {% for item in spizzas %}
                         <tr>
                             <td>{{item.name}}</td>
-                            <td>{{item.smallprice}}</td>
-                            <td>{{item.largeprice}}</td>
+                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
+                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
                             <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
                         </tr>
                     {% endfor %}
@@ -70,8 +74,8 @@
                     {% for item in subs %}
                         <tr>
                             <td>{{item.name}}</td>
-                            <td>{{item.smallprice}}</td>
-                            <td>{{item.largeprice}}</td>
+                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
+                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
                             <td><button data-item="sub" class="addbutton" id="addsub{{item.id}}">Add</button></td>
                         </tr>
                     {% endfor %}
@@ -134,8 +138,8 @@
                     {% for item in platters %}
                         <tr>
                             <td>{{item.name}}</td>
-                            <td>{{item.smallprice}}</td>
-                            <td>{{item.largeprice}}</td>
+                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
+                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
                             <td><button data-item="platter" class="addbutton" id="addplatter{{item.id}}">Add</button></td>
                         </tr>
                     {% endfor %}
