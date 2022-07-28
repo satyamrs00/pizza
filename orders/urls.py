@@ -10,5 +10,6 @@ urlpatterns = [
     path('item/<str:thing>/<int:id>', views.item, name='item'),
     path('cart', views.cart, name='cart'),
     path('orders', views.orders, name="orders"),
-    path('order/<int:order_id>', views.order, name="order")
+    path('order/<int:order_id>', views.order, name="order"),
+    path('account', views.my_account, name="my_account")
 ]

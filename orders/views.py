@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from orders.forms import RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order
 
+THINGS=["pizza", "sub", "pasta", "salad", "platter"]
+
 # Create your views here.
 def index(request):
     return render(request, "orders/index.html")
@@ -291,7 +293,9 @@ def cart(request):
     except Cart.DoesNotExist:
         c = Cart(user=request.user)
         c.save()
+
     if request.method == "POST":
+        """place order"""
         data = json.loads(request.body.decode("utf-8"))
         if not data.get('address') or data.get("address") == "":
             return JsonResponse({
@@ -308,9 +312,7 @@ def cart(request):
         o = Order(user=request.user, payment_mode=data.get('paymethod'), address=a, price=c.price)
         o.save()
 
-        things=["pizza", "sub", "pasta", "salad", "platter"]
-
-        for thing in things:
+        for thing in THINGS:
             carts = "Cart" + thing.capitalize()
             cartc = globals()[carts]
             orders = "Order" + thing.capitalize()
@@ -332,14 +334,16 @@ def cart(request):
             "redirect": "/"
         })
     if request.method == "PUT":
+        """provide data for confirmation dialog box"""
         return JsonResponse({
             "id": c.id,
             "price": c.price
         })
     
-    items = list(chain(c.pizza.all(), c.sub.all(), c.pasta.all(), c.salad.all(), c.platter.all()))
+    """load cart details"""
+    items = list(chain.from_iterable(getattr(c, thing).all() for thing in THINGS))
     quantities = []
-    for item in list(chain(c.cartpizza_set.all(), c.cartsub_set.all(), c.cartpasta_set.all(), c.cartsalad_set.all(), c.cartplatter_set.all())):
+    for item in list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS)):
         quantities.append(item.quantity)
     return render(request, 'orders/cart.html', {
         "items": list(zip(items, quantities)),
@@ -347,12 +351,13 @@ def cart(request):
     })
 
 def orders(request):
-    orders = Order.objects.filter(user=request.user)
+    """show all orders in breif"""
+    orders = Order.objects.filter(user=request.user).order_by('-placedtime')
     allitems = []
     for o in orders:
-        items = list(chain(o.pizza.all(), o.sub.all(), o.pasta.all(), o.salad.all(), o.platter.all()))
+        items = list(chain.from_iterable(getattr(o, thing).all() for thing in THINGS))
         quantities = []
-        for item in list(chain(o.orderpizza_set.all(), o.ordersub_set.all(), o.orderpasta_set.all(), o.ordersalad_set.all(), o.orderplatter_set.all())):
+        for item in list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS)):
             quantities.append(item.quantity)
         items = list(zip(items, quantities))
         allitems.append(items)
@@ -362,13 +367,20 @@ def orders(request):
     })
 
 def order(request, order_id):
+    """show details of one order"""
     o = Order.objects.get(id=order_id)
-    items = list(chain(o.pizza.all(), o.sub.all(), o.pasta.all(), o.salad.all(), o.platter.all()))
+    items = list(chain.from_iterable(getattr(o, thing).all() for thing in THINGS))
     quantities = []
-    for item in list(chain(o.orderpizza_set.all(), o.ordersub_set.all(), o.orderpasta_set.all(), o.ordersalad_set.all(), o.orderplatter_set.all())):
+    for item in list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS)):
         quantities.append(item.quantity)
 
     return render(request, "orders/order.html", {
         "o" : o,
         "items": list(zip(items, quantities))
+    })
+
+def my_account(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request, "orders/my_account.html",{
+        "addresses": addresses
     })

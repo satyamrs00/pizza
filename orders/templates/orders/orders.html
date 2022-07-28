@@ -22,6 +22,7 @@
                         Pending
                     {% endif %}
                     {{order.price}}
+                    <br>Placed on : {{order.placedtime|date:"d F Y H:i"}}
                     <hr>
                 </div>
             </a>

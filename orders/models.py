@@ -1,3 +1,6 @@
+from argparse import _MutuallyExclusiveGroup
+from operator import mod
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -159,5 +162,11 @@ class OrderPlatter(WeightedM2M):
     platter = models.ForeignKey(PlatterCombination, on_delete=models.CASCADE)
 
 class Address(models.Model):
-    address = models.TextField()
+    name = models.CharField(max_length=200, default="")
+    addressline = models.TextField()
+    city = models.CharField(max_length=200, default="")
+    state = models.CharField(max_length=200, default="")
+    country = models.CharField(max_length=200, default="")
+    pin = models.IntegerField(default=0)
+    phone = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

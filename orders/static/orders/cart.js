@@ -83,8 +83,10 @@ function loadConfirmation(data) {
     closespan.innerHTML = '&times;';
     let pricediv = document.createElement('div');
     pricediv.innerHTML = `Total price for this order is ${data.price}`;
+
     let addresslabel = document.createElement('label');
     addresslabel.innerHTML = 'Address : <br><textarea id="addresstext" name="address" cols="30" rows="10"></textarea>'
+    
     let paymenth = document.createElement('div');
     paymenth.innerHTML = 'Choose a payment method : ';
     let paymentdiv = document.createElement('div');
