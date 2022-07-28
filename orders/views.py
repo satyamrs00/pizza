@@ -281,7 +281,11 @@ def item(request, thing, id):
 
 @login_required
 def cart(request):
-    c = Cart.objects.get(user=request.user)
+    try:
+        c = Cart.objects.get(user=request.user)
+    except Cart.DoesNotExist:
+        c = Cart(user=request.user)
+        c.save()
     if request.method == "POST":
         data = json.loads(request.body.decode("utf-8"))
         if not data.get('address') or data.get("address") == "":
