@@ -167,6 +167,6 @@ class Address(models.Model):
     city = models.CharField(max_length=200, default="")
     state = models.CharField(max_length=200, default="")
     country = models.CharField(max_length=200, default="")
-    pin = models.IntegerField(default=0)
-    phone = models.IntegerField(default=0)
+    pin = models.PositiveIntegerField(default=0)
+    phone = models.PositiveBigIntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

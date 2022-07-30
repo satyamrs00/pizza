@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block head %}
-    <script type="module" src="{% static 'orders/cart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'orders/cart.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -15,6 +15,48 @@
     <hr>
     <div>
         <div id="modal" class="modal">
+            <div class="modal-content" id="modal-content">
+                <span class="close">&times;</span>
+                <div>Total price for this order is {{c.price}}</div>
+                <form action="{% url 'cart' %}" method="post" id="orderform">
+                    {% csrf_token %}
+                    <label>
+                        Select an address
+                        <select name="address" id="selectaddress">
+                            <option value="address" selected disabled>Select</option>
+                            {% for address in addresses %}
+                                <option value="address{{address.id}}">
+                                    {{address.name}}, {{address.addressline}}, {{address.city}} - {{address.pin}}, {{address.state}}, {{address.country}}, Ph : {{address.phone}}
+                                </option>
+                            {% endfor %}
+                            <option value="addaddress" id="addaddress">Add another address</option>
+                        </select>
+                    </label>
+                    <div id="addressform">
+                        {{ form.as_p }}
+                    </div>
+                    <div>Choose a payment method</div>
+                    <div>
+                        <label>
+                            <input type="radio" name="paymethod" value="0">UPI
+                        </label><br>
+                        <label>
+                            <input type="radio" name="paymethod" value="1">Wallets
+                        </label><br>
+                        <label>
+                            <input type="radio" name="paymethod" value="2">Credit / Debit / ATM Card
+                        </label><br>
+                        <label>
+                            <input type="radio" name="paymethod" value="3">Net Banking<br>
+                        </label><br>
+                        <label>
+                            <input type="radio" name="paymethod" value="4">Cash on Delivery<br>
+                        </label><br>
+                    </div>
+                    <div id="msg"></div>
+                    <button type="submit" id="confirmorder">Confirm Order</button>
+                </form>
+            </div>
         </div>
         {% for item, quantity in items %}
             <div>

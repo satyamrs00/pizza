@@ -37,3 +37,7 @@ body {
     text-decoration: none;
     cursor: pointer;
 }  
+
+div#addressform {
+    display: none;
+}

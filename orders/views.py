@@ -7,8 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 import decimal
 from itertools import chain
 from django.contrib.auth.decorators import login_required
+import operator
 
-from orders.forms import RegistrationForm, LoginForm
+from orders.forms import Addressform, RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order
 
 THINGS=["pizza", "sub", "pasta", "salad", "platter"]
@@ -296,18 +297,23 @@ def cart(request):
 
     if request.method == "POST":
         """place order"""
-        data = json.loads(request.body.decode("utf-8"))
-        if not data.get('address') or data.get("address") == "":
-            return JsonResponse({
-                "error": "No address provided"
+        data = request.POST
+        print(data)
+        if not data.get('address'):
+            return render(request, "orders/index.html", {
+                "error": "Address not selected"
             })
+            
         if not data.get('paymethod') or data.get("paymethod") == "":
-            return JsonResponse({
+            return render(request, "orders/index.html", {
                 "error": "Payment method not selected"
             })
 
-        a = Address(address=data.get('address'), user = request.user)
-        a.save()
+        if data.get('address') == "addaddress":
+            a = Address(name=data.get('name'), addressline=data.get('addressline'), city=data.get('city'), state=data.get('state'), country=data.get('country'), pin=data.get('pin'), phone=data.get('phone'), user=request.user)
+            a.save()
+        else:
+            a = Address.objects.get(id=data.get('address')[7:])
 
         o = Order(user=request.user, payment_mode=data.get('paymethod'), address=a, price=c.price)
         o.save()
@@ -329,25 +335,26 @@ def cart(request):
                 c.price = 0
                 c.save()
         
-        return JsonResponse({
-            "success": "order placed",
-            "redirect": "/"
-        })
-    if request.method == "PUT":
-        """provide data for confirmation dialog box"""
-        return JsonResponse({
-            "id": c.id,
-            "price": c.price
+        return render(request, "orders/index.html", {
+            "success": "order placed"
         })
     
     """load cart details"""
-    items = list(chain.from_iterable(getattr(c, thing).all() for thing in THINGS))
+    items = []
     quantities = []
-    for item in list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS)):
+    itemrels = list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS))
+    itemrels = sorted(itemrels, key=operator.attrgetter('datetime_added'), reverse=True)
+    for item in itemrels:
+        items.append(getattr(item, item.__class__.__name__.lower()[4:]))
         quantities.append(item.quantity)
+
+    addresses = Address.objects.filter(user=request.user)
+
     return render(request, 'orders/cart.html', {
         "items": list(zip(items, quantities)),
-        "cart": c
+        "cart": c,
+        "addresses" : addresses,
+        "form": Addressform
     })
 
 def orders(request):
@@ -355,9 +362,10 @@ def orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-placedtime')
     allitems = []
     for o in orders:
-        items = list(chain.from_iterable(getattr(o, thing).all() for thing in THINGS))
+        items = []
         quantities = []
         for item in list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS)):
+            items.append(getattr(item, item.__class__.__name__.lower()[5:]))
             quantities.append(item.quantity)
         items = list(zip(items, quantities))
         allitems.append(items)
@@ -369,9 +377,12 @@ def orders(request):
 def order(request, order_id):
     """show details of one order"""
     o = Order.objects.get(id=order_id)
-    items = list(chain.from_iterable(getattr(o, thing).all() for thing in THINGS))
+    items = []
     quantities = []
-    for item in list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS)):
+    itemrels = list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS))
+    itemrels = sorted(itemrels, key=operator.attrgetter('datetime_added'), reverse=True)
+    for item in itemrels:
+        items.append(getattr(item, item.__class__.__name__.lower()[5:]))
         quantities.append(item.quantity)
 
     return render(request, "orders/order.html", {
@@ -380,7 +391,7 @@ def order(request, order_id):
     })
 
 def my_account(request):
-    addresses = Address.objects.filter(user=request.user)
+    addresses = Address.objects.filter(user=request.user).order_by("-id")
     return render(request, "orders/my_account.html",{
         "addresses": addresses
     })
