@@ -150,6 +150,14 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'satyambots@gmail.com'
+EMAIL_HOST_PASSWORD = config('GMAIL_PASSWORD')
+DEFAULT_FROM_EMAIL = 'satyambots@gmail.com'
+
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 try:
     config('DJANGO_DEVELOPMENT')

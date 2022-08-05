@@ -3,14 +3,14 @@ import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
-import decimal
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 import operator
+from django.core.mail import EmailMultiAlternatives, send_mail
 
 from orders.forms import Addressform, RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order
+from pizza.settings import DEFAULT_FROM_EMAIL
 
 THINGS=["pizza", "sub", "pasta", "salad", "platter"]
 
@@ -45,6 +45,10 @@ def register(request):
             u.last_name = form['last_name']
             u.email = form['email']
             u.save()
+            subject = "Pizza - Registeration completed"
+            message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here pinopizza.herokuapp.com/account"
+            send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=False)
+
             login(request, u)
 
             return redirect('index')
@@ -61,7 +65,6 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print('here')
             login(request,user)
             return redirect('index')
         else:
@@ -119,20 +122,14 @@ def item(request, thing, id):
 
         if thing == 'pizza':
             if len(request.POST.getlist('Toppings')) != thingcls.objects.get(id=id).extrascount:
-                print(len(request.POST.get('Toppings')))
-                print(thingcls.objects.get(id=id).extrascount)
                 return HttpResponse('Select proper number of toppings')
                 
             try:
-                print(request.POST.getlist('Toppings'))
-                print([int(e[8:]) for e in request.POST.getlist('Toppings')])
-
                 # this if statement is to tackle bug2
                 if thingcls.objects.get(id=id).extrascount == 0:
                     p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'))[0]
                 else:
                     p = PizzaCombination.objects.filter(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'), toppings__in= [int(e[8:]) for e in request.POST.getlist('Toppings')])[0]
-                print(p)
             except IndexError:
                 p = PizzaCombination(pizza=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 p.save()
@@ -173,7 +170,6 @@ def item(request, thing, id):
         elif thing == "platter":
             try:
                 p = PlatterCombination.objects.filter(platter=thingcls.objects.get(id=id), size=request.POST.get('size'))[0]
-                print(p)
             except IndexError:
                 p = PlatterCombination(platter=thingcls.objects.get(id=id), size=request.POST.get('size'))
                 p.save()
@@ -298,7 +294,6 @@ def cart(request):
     if request.method == "POST":
         """place order"""
         data = request.POST
-        print(data)
         if not data.get('address'):
             return render(request, "orders/index.html", {
                 "error": "Address not selected"
@@ -335,6 +330,9 @@ def cart(request):
                 c.price = 0
                 c.save()
         
+        subject = "Pizza - Order Confirmation"
+        message = "Thank you for ordering from Pinochhio's Pizza. Your order is currently being prepared and will be delivered to you within 40 minutes"
+        send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=False)
         return render(request, "orders/index.html", {
             "success": "order placed"
         })

@@ -10,4 +10,5 @@ DONE: (9) zip and list (made dicts instead) extras extrasname and extrasprice du
 DONE: (10) show select address in confirmation modal box and change place order part of views accordingly
 DONE: (11) give a link to access admin page
 DONE: (12) create a new my account page to show user info
-TODO: (13) add sending email functionality
+DONE: (13) add sending email functionality
+TODO: (14) show a 'mark as complete' button for admins that will add a completed datetime to order and also send a email
