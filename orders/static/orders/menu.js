@@ -83,9 +83,10 @@ document.addEventListener('DOMContentLoaded',() => {
                 window.onclick = (event) => {
                     if (event.target == modaldiv) {
                         modaldiv.style.display = "none";
-                        while(modaldiv.firstChild){
-                            modaldiv.removeChild(modaldiv.lastChild);
-                        }
+                        let name = document.getElementById('itemname');
+                        name.innerHTML = '';
+                        let form = document.getElementById('cartform');
+                        form.innerHTML = '';
                     }
                 }
 
@@ -116,11 +117,11 @@ function loadcartform(data, addbutton){
     form.setAttribute('action', `/item/${addbutton.dataset.item}/${addbutton.getAttribute('id').replace( /^\D+/g, '')}`);
     // form.setAttribute('method', 'post');
     // form.setAttribute('id', 'cartform');
-    // let csrfinput = document.createElement('input');
-    // csrfinput.setAttribute('type', 'hidden');
-    // csrfinput.setAttribute('name', 'csrfmiddlewaretoken');
-    // csrfinput.setAttribute('value', getCookie('csrftoken'));
-    // form.appendChild(csrfinput);
+    let csrfinput = document.createElement('input');
+    csrfinput.setAttribute('type', 'hidden');
+    csrfinput.setAttribute('name', 'csrfmiddlewaretoken');
+    csrfinput.setAttribute('value', getCookie('csrftoken'));
+    form.appendChild(csrfinput);
 
     if (data.sizeoptions === true){
         if (data.missingsize === null){

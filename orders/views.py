@@ -278,6 +278,7 @@ def item(request, thing, id):
             "id": p.id,
             "name": p.getname(),
             "sizeoptions": sizeoptions,
+            "missingsize": missingsize,
             "extrasoption": extrasoption,
             "smallprice": p.smallprice,
             "largeprice": p.largeprice
