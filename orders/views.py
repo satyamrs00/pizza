@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 import operator
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import send_mail
 
 from orders.forms import Addressform, RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order

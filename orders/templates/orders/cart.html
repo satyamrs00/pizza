@@ -88,7 +88,7 @@
         </div>
         <div>
             {% if items|length > 0 %}
-                <button id="placeorder">Place Order({% countitemsbyquantity items %} items)</button>
+                <button id="placeorder">Place Order({{request.session.cartcount}} items)</button>
             {% endif %}
         </div>
     </div>

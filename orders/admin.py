@@ -2,12 +2,10 @@ from django.contrib import admin
 from . import models
 
 # Register your models here.
-admin.site.register(models.Pizza)
-admin.site.register(models.Topping)
-admin.site.register(models.Sub)
-admin.site.register(models.Addon)
-admin.site.register(models.Pasta)
-admin.site.register(models.Salad)
-admin.site.register(models.Platter)
-admin.site.register(models.Order)
-admin.site.register(models.User)
+@admin.register(models.Pizza, models.Topping, models.Sub, models.Addon, models.Pasta, models.Salad, models.Platter)
+class MenuAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    fields = ('completedtime',)
