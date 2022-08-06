@@ -219,7 +219,7 @@ def item(request, thing, id):
         try:
             request.session['cartcount'] += 1
         except KeyError:
-            request.session['cartcount'] = 0
+            request.session['cartcount'] = 1
 
         return redirect('menu')
 
