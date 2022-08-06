@@ -4,4 +4,5 @@ SOLN : created custom m2m relational tables using 'through' fields
 FIXED: (2) adding more than one items with no toppings/addons creates new combination for each time
 SOLN : set a condition that if no of extras == 0 then dont filter for extras
 FIXED: (3) server error if tried to access cart before adding any element
-KNOWN: (4) reloading order confirmation page repeats the order
+FIXED: (4) reloading order confirmation page repeats the order
+SOLN : redirected to another url

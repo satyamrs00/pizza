@@ -13,7 +13,60 @@
     <div>
         <h2>Menu</h2>
         <div>
-            <div id="modal" class="modal"></div>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">
+                        &times;
+                    </span>
+                    <div id="itemname">
+                    </div>
+                    <form id="cartform" method="post">
+                        {% csrf_token %}
+                        
+                        <!-- {% if sizeoptions %}
+                            {% if missingsize == null %}
+                                <div>Select Size</div>
+                                <label>
+                                    <input type="radio" name="size" value="small" id="small">
+                                    Small
+                                </label>
+                                <br>
+                                <label>
+                                    <input type="radio" name="size" value="large" id="large">
+                                    Large
+                                </label>
+                            {% elif missingsize == 'small' %}
+                                <input type="hidden" name="size" value="large" id="large">
+                            {% elif missingsize == 'large' %}
+                                <input type="hidden" name="size" value="small" id="small">
+                            {% endif %}
+                        {% endif %}
+                        <br> -->
+                        <!-- {% if extrasoption %}
+                            <div>
+                                Select {{extrastype}}<br>
+                                {% if extrastype == 'Toppings' %}
+                                    select {{extrasamount}} items
+                                {% endif %}
+                            </div>
+                            
+                            {% for extra in extras %}
+                                <label>
+                                    <input type="checkbox" class="{{extrastype}}" name="{{extrastype}}" value="{{extrastype}}{{extra.id}}">
+                                    {{ extra.name }}
+                                </label>
+                                <span>{% if extra.price != 0 %}{{extra.price}}{% endif %}</span>
+                                <br>
+                            {% endfor %}
+                        {% endif %} -->
+                        <!-- <div id="priceconfirmation"></div>
+                        <div id="msg"></div>
+                        <input type="submit" value="Save"> -->
+                    </form>
+                </div>            
+            </div>
+            
             <h3>Regular Pizza</h3>
             <table>
                 <thead>
@@ -147,32 +200,4 @@
             </table>
         </div>
     </div>
-    <!-- <div class="modal-content">
-        <span class="close">
-            &times;
-        </span>
-        <form action="" method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-            <div>Select Size</div>
-            <label>
-                <input type="radio" name="size" value="small">
-                Small
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="size" value="large">
-                Large
-            </label>
-            <br>
-            <div>Select Toppings</div>
-            {% for item in toppings %}
-                <label>
-                    <input type="checkbox" class="topping" name="topping" value="topping{{item.id}}">
-                    {{ item.name }}
-                </label>
-                <br>
-            {% endfor %}
-            <input type="submit" value="Save">
-        </form>
-    </div> -->
 {% endblock %}

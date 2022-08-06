@@ -283,6 +283,9 @@ def item(request, thing, id):
             "price": p.price
         })
 
+def placed(request):
+    return render(request, 'orders/order_placed.html')
+
 @login_required
 def cart(request):
     try:
@@ -333,9 +336,7 @@ def cart(request):
         subject = "Pizza - Order Confirmation"
         message = "Thank you for ordering from Pinochhio's Pizza. Your order is currently being prepared and will be delivered to you within 40 minutes"
         send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=False)
-        return render(request, "orders/index.html", {
-            "success": "order placed"
-        })
+        return redirect('placed')
     
     """load cart details"""
     items = []

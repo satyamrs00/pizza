@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded',() => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                let modalcontentdiv = loadcartform(data, addbutton);
+                loadcartform(data, addbutton);
                 let modaldiv = document.getElementById('modal');
-                modaldiv.appendChild(modalcontentdiv);
                 modaldiv.style.display = "block";
 
                 let pprice = 0;
@@ -105,22 +104,23 @@ document.addEventListener('DOMContentLoaded',() => {
 function loadcartform(data, addbutton){
     // let modaldiv = document.createElement('div');
     // modaldiv.classList.add('modal');
-    let modalcontentdiv = document.createElement('div');
-    modalcontentdiv.classList.add('modal-content')
-    let close = document.createElement('span');
-    close.classList.add('close');
-    close.innerHTML = '&times;';
-    let name = document.createElement('div');
+    // let modalcontentdiv = document.createElement('div');
+    // modalcontentdiv.classList.add('modal-content')
+    // let close = document.createElement('span');
+    // close.classList.add('close');
+    // close.innerHTML = '&times;';
+    let name = document.getElementById('itemname');
     name.innerHTML = data.name;
-    let form = document.createElement('form');
+    // let form = document.createElement('form');
+    let form = document.getElementById('cartform');
     form.setAttribute('action', `/item/${addbutton.dataset.item}/${addbutton.getAttribute('id').replace( /^\D+/g, '')}`);
-    form.setAttribute('method', 'post');
-    form.setAttribute('id', 'cartform');
-    let csrfinput = document.createElement('input');
-    csrfinput.setAttribute('type', 'hidden');
-    csrfinput.setAttribute('name', 'csrfmiddlewaretoken');
-    csrfinput.setAttribute('value', getCookie('csrftoken'));
-    form.appendChild(csrfinput);
+    // form.setAttribute('method', 'post');
+    // form.setAttribute('id', 'cartform');
+    // let csrfinput = document.createElement('input');
+    // csrfinput.setAttribute('type', 'hidden');
+    // csrfinput.setAttribute('name', 'csrfmiddlewaretoken');
+    // csrfinput.setAttribute('value', getCookie('csrftoken'));
+    // form.appendChild(csrfinput);
 
     if (data.sizeoptions === true){
         if (data.missingsize === null){
@@ -205,11 +205,11 @@ function loadcartform(data, addbutton){
     submitbutton.setAttribute('type', 'submit');
     submitbutton.setAttribute('value', 'Save');
     form.appendChild(submitbutton);
-    modalcontentdiv.appendChild(name);
-    modalcontentdiv.appendChild(close);
-    modalcontentdiv.appendChild(form);
+    // modalcontentdiv.appendChild(name);
+    // modalcontentdiv.appendChild(close);
+    // modalcontentdiv.appendChild(form);
     // modaldiv.appendChild(modalcontentdiv);
-    return modalcontentdiv;
+    // return modalcontentdiv;
 }
 
 
