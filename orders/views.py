@@ -106,6 +106,9 @@ def item(request, thing, id):
 
         c.price -= i.price
         c.save()
+
+        request.session['cartcount'] -= 1
+
         return JsonResponse({
             "message": "successfully removed"
         })
@@ -212,6 +215,12 @@ def item(request, thing, id):
 
         c.price += p.price
         c.save()
+
+        try:
+            request.session['cartcount'] += 1
+        except KeyError:
+            request.session['cartcount'] = 0
+
         return redirect('menu')
 
     """get information about the item to load the form to add to cart"""
@@ -333,6 +342,7 @@ def cart(request):
                 c.price = 0
                 c.save()
         
+        request.session['cartcount'] = 0
         subject = "Pizza - Order Confirmation"
         message = "Thank you for ordering from Pinochhio's Pizza. Your order is currently being prepared and will be delivered to you within 40 minutes"
         send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=False)

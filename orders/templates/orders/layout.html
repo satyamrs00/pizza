@@ -28,7 +28,7 @@
                 <a class="nav-link" href="{% url 'menu' %}">Menu</a>
                 {% if user.is_authenticated %}
                     <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
-                    <a class="nav-link" href="{% url 'cart' %}">Cart{{cartcount}}</a>
+                    <a class="nav-link" href="{% url 'cart' %}">Cart({{request.session.cartcount}})</a>
                     <a class="nav-link" href="{% url 'orders' %}">Orders</a>
                     {% if user.is_superuser %}
                         <a class="nav-link" href="/admin">Admin</a>
