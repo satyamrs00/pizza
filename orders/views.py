@@ -220,7 +220,11 @@ def item(request, thing, id):
         try:
             request.session['cartcount'] += 1
         except KeyError:
-            request.session['cartcount'] = 1
+            cartcount = 0
+            itemrels = list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS))
+            for item in itemrels:
+                cartcount += item.quantity
+            request.session['cartcount'] = cartcount
 
         return redirect('menu')
 
@@ -319,8 +323,11 @@ def cart(request):
             })
 
         if data.get('address') == "addaddress":
-            a = Address(name=data.get('name'), addressline=data.get('addressline'), city=data.get('city'), state=data.get('state'), country=data.get('country'), pin=data.get('pin'), phone=data.get('phone'), user=request.user)
-            a.save()
+            form = Addressform(request.POST)
+            if form.is_valid():
+                form = form.cleaned_data
+                a = Address(name=form['name'], addressline=form['addressline'], city=form['city'], state=form['state'], country=form['country'], pin=form['pin'], phone=form['phone'], user=request.user)
+                a.save()
         else:
             a = Address.objects.get(id=data.get('address')[7:])
 
