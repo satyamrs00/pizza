@@ -6,3 +6,4 @@ SOLN : set a condition that if no of extras == 0 then dont filter for extras
 FIXED: (3) server error if tried to access cart before adding any element
 FIXED: (4) reloading order confirmation page repeats the order
 SOLN : redirected to another url
+KNOWN: (5) gives server error 500 if adding a new address in production
