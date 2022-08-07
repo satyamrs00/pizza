@@ -324,10 +324,8 @@ def cart(request):
 
         if data.get('address') == "addaddress":
             form = Addressform(request.POST)
-            print(form)
             if form.is_valid():
                 form = form.cleaned_data
-                print(form)
                 a = Address(name=form['name'], addressline=form['addressline'], city=form['city'], state=form['state'], country=form['country'], pin=form['pin'], phone=form['phone'], user=request.user)
                 a.save()
         else:
