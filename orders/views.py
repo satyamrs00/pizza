@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 import operator
+import decimal
 from django.core.mail import send_mail
 
 from orders.forms import Addressform, RegistrationForm, LoginForm
@@ -47,7 +48,7 @@ def register(request):
             u.save()
             subject = "Pizza - Registeration completed"
             message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here pinopizza.herokuapp.com/account"
-            send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=False)
+            send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=True)
 
             login(request, u)
 
@@ -104,7 +105,7 @@ def item(request, thing, id):
         else:
             r.delete()
 
-        c.price -= i.price
+        c.price -= decimal.Decimal(i.price)
         c.save()
 
         request.session['cartcount'] -= 1
@@ -213,7 +214,7 @@ def item(request, thing, id):
         r.quantity +=1
         r.save()
 
-        c.price += p.price
+        c.price += decimal.Decimal(p.price)
         c.save()
 
         try:
@@ -346,7 +347,7 @@ def cart(request):
         request.session['cartcount'] = 0
         subject = "Pizza - Order Confirmation"
         message = "Thank you for ordering from Pinochhio's Pizza. Your order is currently being prepared and will be delivered to you within 40 minutes"
-        send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=False)
+        send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=True)
         return redirect('placed')
     
     """load cart details"""
