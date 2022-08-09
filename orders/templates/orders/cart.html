@@ -14,48 +14,61 @@
     <h2>Cart</h2>
     <hr>
     <div>
-        <div id="modal" class="modal">
-            <div class="modal-content" id="modal-content">
-                <span class="close">&times;</span>
-                <div>Total price for this order is {{c.price}}</div>
-                <form action="{% url 'cart' %}" method="post" id="orderform">
-                    {% csrf_token %}
-                    <label>
-                        Select an address
-                        <select name="address" id="selectaddress">
-                            <option value="address" selected disabled>Select</option>
-                            {% for address in addresses %}
-                                <option value="address{{address.id}}">
-                                    {{address.name}}, {{address.addressline}}, {{address.city}} - {{address.pin}}, {{address.state}}, {{address.country}}, Ph : {{address.phone}}
-                                </option>
+        <div class="modal" id="cartmodal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirm your order
+                        <span data-bs-dismiss="modal">&times;</span>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div>Total price for this order is ${{cart.price}}</div>
+                        <form action="{% url 'cart' %}" method="post" id="orderform">
+                            {% csrf_token %}
+                            <label class="form-label">
+                                Select an address : 
+                                <select class="form-select" name="address" id="selectaddress">
+                                    <option value="address" selected disabled>Select</option>
+                                    {% for address in addresses %}
+                                        <option value="address{{address.id}}">
+                                            {{address.name}}, {{address.addressline}}, {{address.city}} - {{address.pin}}, {{address.state}}, {{address.country}}, Ph : {{address.phone}}
+                                        </option>
+                                    {% endfor %}
+                                    <option value="addaddress" id="addaddress">Add another address</option>
+                                </select>
+                            </label>
+                            <div id="addressform">
+                                {% for field in form %}
+                                <div class="form-floating mb-3">
+                                    {{field}}
+                                    {{field.label_tag}}
+                                </div>
                             {% endfor %}
-                            <option value="addaddress" id="addaddress">Add another address</option>
-                        </select>
-                    </label>
-                    <div id="addressform">
-                        {{ form.as_p }}
+                            </div>
+                            <div>Choose a payment method : </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="0">UPI
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="1">Wallets
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="2">Credit / Debit / ATM Card
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="3">Net Banking<br>
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="4">Cash on Delivery<br>
+                                </label><br>
+                            </div>
+                            <div id="msg"></div>
+                            <button type="submit" id="confirmorder">Confirm Order</button>
+                        </form>    
                     </div>
-                    <div>Choose a payment method</div>
-                    <div>
-                        <label>
-                            <input type="radio" name="paymethod" value="0">UPI
-                        </label><br>
-                        <label>
-                            <input type="radio" name="paymethod" value="1">Wallets
-                        </label><br>
-                        <label>
-                            <input type="radio" name="paymethod" value="2">Credit / Debit / ATM Card
-                        </label><br>
-                        <label>
-                            <input type="radio" name="paymethod" value="3">Net Banking<br>
-                        </label><br>
-                        <label>
-                            <input type="radio" name="paymethod" value="4">Cash on Delivery<br>
-                        </label><br>
-                    </div>
-                    <div id="msg"></div>
-                    <button type="submit" id="confirmorder">Confirm Order</button>
-                </form>
+                </div>
             </div>
         </div>
         {% for item, quantity in items %}
@@ -78,17 +91,19 @@
                     <div>Size : {{ item.size }}</div>
                 {% endif %}
                 <div>Quantity : {{ quantity }}</div>
-                <div>Price : {% multiply item.price quantity %}</div>
+                <div>Price : ${% multiply item.price quantity %}</div>
                 <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>
             </div>
             <hr>
         {% endfor %}
         <div>
-            Total Price : {{ cart.price }}
+            Total Price : ${{ cart.price }}
         </div>
         <div>
             {% if items|length > 0 %}
-                <button id="placeorder">Place Order({{request.session.cartcount}} items)</button>
+                <button id="placeorder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartmodal">
+                    Place Order({{request.session.cartcount}} items)
+                </button>
             {% endif %}
         </div>
     </div>

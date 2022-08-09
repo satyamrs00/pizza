@@ -7,3 +7,4 @@ python-dotenv
 python-decouple
 virtualenv
 psycopg2
+pillow

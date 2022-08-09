@@ -1,15 +1,77 @@
 {% extends "orders/layout.html" %}
+{% load static %}
 
 {% block title %}
     Account
 {% endblock %}
 
+{% block head %}
+    <script type="text/javascript" src="{% static 'orders/my_account.js' %}"></script>
+{% endblock %}
+
 {% block body %}
+    <div class="modal" id="addressmodal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Add Address
+                    <span data-bs-dismiss="modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'my_account' %}" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-floating mb-3">
+                                {{field}}
+                                {{field.label_tag}}
+                            </div>
+                        {% endfor %}
+                        <input type="submit" value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="accountmodal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Edit Personal Info
+                    <span data-bs-dismiss="modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="editaccountform">
+                        <div class="form-floating mb-3">
+                            <input placeholder="username" class="form-control" id="username" type="text" name="username" value="{{user.username}}" required>
+                            <label>Username</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input placeholder="first_name" class="form-control" id="first_name" type="text" name="first_name" value="{{user.first_name}}" required>
+                            <label>First Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input placeholder="last_name" class="form-control" id="last_name" type="text" name="last_name" value="{{user.last_name}}">
+                            <label>Last Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input placeholder="email" class="form-control" id="email" type="email" name="email" value="{{user.email}}" required>
+                            <label>Email Address</label>
+                        </div>
+                        <div>
+                            <button id="save" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div>
         <h4>Personal Information</h4>
         <div>Username : {{user.username}}</div>
         <div>Name : {{user.first_name}} {{user.last_name}}</div>
         <div>Email Address : {{user.email}}</div>
+        <button id="edit" data-bs-toggle="modal" data-bs-target="#accountmodal">Edit</button>
     </div>
     <div>
         <h4>Saved Addresses</h4>
@@ -21,5 +83,6 @@
         Ph : {{address.phone}}<br>
         <hr>
         {% endfor %}
+        <button id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal">Add Address</button>
     </div>
 {% endblock %}

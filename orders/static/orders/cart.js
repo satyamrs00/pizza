@@ -2,10 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const removebuttons = document.querySelectorAll('.removecart');
     [...removebuttons].forEach(removebutton => {
         removebutton.addEventListener('click', () => {
-            console.log(removebutton.dataset.class);
-            console.log(removebutton.dataset.id);
             fetch(`/item/${removebutton.dataset.class}/${removebutton.dataset.id}`, {
-                method : "PATCH",
+                method: "PATCH",
                 credentials: 'same-origin',
                 headers: {
                     "X-CSRFToken": getCookie("csrftoken")
@@ -21,18 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const placeorder = document.getElementById('placeorder');
     placeorder.addEventListener('click', () => {
-
-        let modaldiv = document.getElementById('modal');
-        modaldiv.style.display = "block";
-
-        document.querySelector('.close').addEventListener('click', () => {
-            modaldiv.style.display = "none";
-        });
-        window.onclick = (event) => {
-            if (event.target == modaldiv) {
-                modaldiv.style.display = "none";
-            }
-        }
 
         const select = document.getElementById('selectaddress');
         const form = document.getElementById('addressform').innerHTML;

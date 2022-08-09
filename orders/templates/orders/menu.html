@@ -10,194 +10,210 @@
 {% endblock %}
 
 {%  block body %}
-    <div>
+    <div id="block">
         <h2>Menu</h2>
-        <div>
-
-            <div id="modal" class="modal">
+        <div class="modal" id="menumodal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <span class="close">
-                        &times;
-                    </span>
-                    <div id="itemname">
+                    <div class="modal-header">
+                        Save to Cart
+                        <span class="close" data-bs-dismiss="modal">&times;</span>
                     </div>
-                    <form id="cartform" method="post">
-                        <!-- {% csrf_token %} -->
-                        
-                        <!-- {% if sizeoptions %}
-                            {% if missingsize == null %}
-                                <div>Select Size</div>
-                                <label>
-                                    <input type="radio" name="size" value="small" id="small">
-                                    Small
-                                </label>
-                                <br>
-                                <label>
-                                    <input type="radio" name="size" value="large" id="large">
-                                    Large
-                                </label>
-                            {% elif missingsize == 'small' %}
-                                <input type="hidden" name="size" value="large" id="large">
-                            {% elif missingsize == 'large' %}
-                                <input type="hidden" name="size" value="small" id="small">
-                            {% endif %}
-                        {% endif %}
-                        <br> -->
-                        <!-- {% if extrasoption %}
-                            <div>
-                                Select {{extrastype}}<br>
-                                {% if extrastype == 'Toppings' %}
-                                    select {{extrasamount}} items
-                                {% endif %}
-                            </div>
+                    <div class="modal-body">
+                        <div id="itemname">
+                        </div>
+                        <form id="cartform" method="post">
+                            <!-- {% csrf_token %} -->
                             
-                            {% for extra in extras %}
-                                <label>
-                                    <input type="checkbox" class="{{extrastype}}" name="{{extrastype}}" value="{{extrastype}}{{extra.id}}">
-                                    {{ extra.name }}
-                                </label>
-                                <span>{% if extra.price != 0 %}{{extra.price}}{% endif %}</span>
-                                <br>
-                            {% endfor %}
-                        {% endif %} -->
-                        <!-- <div id="priceconfirmation"></div>
-                        <div id="msg"></div>
-                        <input type="submit" value="Save"> -->
-                    </form>
+                            <!-- {% if sizeoptions %}
+                                {% if missingsize == null %}
+                                    <div>Select Size</div>
+                                    <label>
+                                        <input type="radio" name="size" value="small" id="small">
+                                        Small
+                                    </label>
+                                    <br>
+                                    <label>
+                                        <input type="radio" name="size" value="large" id="large">
+                                        Large
+                                    </label>
+                                {% elif missingsize == 'small' %}
+                                    <input type="hidden" name="size" value="large" id="large">
+                                {% elif missingsize == 'large' %}
+                                    <input type="hidden" name="size" value="small" id="small">
+                                {% endif %}
+                            {% endif %}
+                            <br> -->
+                            <!-- {% if extrasoption %}
+                                <div>
+                                    Select {{extrastype}}<br>
+                                    {% if extrastype == 'Toppings' %}
+                                        select {{extrasamount}} items
+                                    {% endif %}
+                                </div>
+                                
+                                {% for extra in extras %}
+                                    <label>
+                                        <input type="checkbox" class="{{extrastype}}" name="{{extrastype}}" value="{{extrastype}}{{extra.id}}">
+                                        {{ extra.name }}
+                                    </label>
+                                    <span>{% if extra.price != 0 %}{{extra.price}}{% endif %}</span>
+                                    <br>
+                                {% endfor %}
+                            {% endif %} -->
+                            <!-- <div id="priceconfirmation"></div>
+                            <div id="msg"></div>
+                            <input type="submit" value="Save"> -->
+                        </form>
+                    </div>
                 </div>            
             </div>
-            
+        </div>
+
+        <div>
+            <a href="#rpizza">Pizza</a>
+            <a href="#sub">Sub</a>
+            <a href="#pasta">Pasta</a>
+            <a href="#salad">Salad</a>
+            <a href="#platter">Dinner Platter</a>
+        </div>
+
+        <div id="rpizza">
             <h3>Regular Pizza</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in rpizzas %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
-                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
-                            <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in rpizzas %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                            </ul>
+                            <div class="card-footer">
+                                <button data-item="pizza" class="addbutton" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
-        <div>
+        <div id="spizza">
             <h3>Sicilian Pizza</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in spizzas %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
-                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
-                            <td><button data-item="pizza" class="addbutton" id="addpizza{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in spizzas %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                            </ul>
+                            <div class="card-body">
+                                <button data-item="pizza" class="addbutton" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
-        <div>
+        
+        <div id="sub">
             <h3>Subs</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in subs %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
-                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
-                            <td><button data-item="sub" class="addbutton" id="addsub{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in subs %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                            </ul>
+                            <div class="card-body">
+                                <button data-item="sub" class="addbutton" id="addsub{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
-        <div>
+        <div id="pasta">
             <h3>Pasta</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in pastas %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{{item.price}}</td>
-                            <td><button data-item="pasta" class="addbutton" id="addpasta{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in pastas %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Price : ${{item.price}}</li>
+                            </ul>
+                            <div class="card-body">
+                                <button data-item="pasta" class="addbutton" id="addpasta{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
-        <div>
+        <div id="salad">
             <h3>Salad</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Price</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in salads %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{{item.price}}</td>
-                            <td><button data-item="salad" class="addbutton" id="addsalad{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in salads %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Price : ${{item.price}}</li>
+                            </ul>
+                            <div class="card-body">
+                                <button data-item="salad" class="addbutton" id="addsalad{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
-        <div>
+        <div id="platter">
             <h3>Dinner Platter</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in platters %}
-                        <tr>
-                            <td>{{item.name}}</td>
-                            <td>{% if item.smallprice != 0 %}{{item.smallprice}}{% endif %}</td>
-                            <td>{% if item.largeprice != 0 %}{{item.largeprice}}{% endif %}</td>
-                            <td><button data-item="platter" class="addbutton" id="addplatter{{item.id}}">Add</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for item in platters %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.getname}}</h5>
+                                <p class="card-text">{{item.description}}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                            </ul>
+                            <div class="card-body">
+                                <button data-item="platter" class="addbutton" id="addplatter{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>           
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

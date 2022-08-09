@@ -15,8 +15,7 @@ document.addEventListener('DOMContentLoaded',() => {
             .then(data => {
                 console.log(data);
                 loadcartform(data, addbutton);
-                let modaldiv = document.getElementById('modal');
-                modaldiv.style.display = "block";
+                let modaldiv = document.getElementById('menumodal');
 
                 let pprice = 0;
                 let eprice = 0;
@@ -75,14 +74,13 @@ document.addEventListener('DOMContentLoaded',() => {
                 confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
 
                 document.querySelector('.close').addEventListener('click', () => {
-                    modaldiv.style.display = "none";
-                    while(modaldiv.firstChild){
-                        modaldiv.removeChild(modaldiv.lastChild);
-                    }
+                    let name = document.getElementById('itemname');
+                    name.innerHTML = '';
+                    let form = document.getElementById('cartform');
+                    form.innerHTML = '';
                 });
                 window.onclick = (event) => {
-                    if (event.target == modaldiv) {
-                        modaldiv.style.display = "none";
+                    if (event.target === document.querySelector('#block')) {
                         let name = document.getElementById('itemname');
                         name.innerHTML = '';
                         let form = document.getElementById('cartform');

@@ -6,43 +6,45 @@
         <title>Pizza | {% block title %}{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
-        <link rel="icon" type="image/x-icon" href="../../static/orders/xconvert.com-removebg-preview.ico">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'orders\xconvert.com-removebg-preview.ico' %}">
         {% block head %}
         {% endblock %}
     </head>
     <body>
-        <div>
-            <div class="container-sm">
-                <h1>Pinocchio's Pizza & Subs</h1>
-                <img class="float-end" src="{% static 'orders/pinocchio_72.gif' %}" alt="gif">
-                74 Winthrop Street <br>
-                Harvard Square
-            </div>
-            {% block details %}
-            {% endblock %}
-            <nav class="nav flex">
-                <a class="nav-link" href="{% url 'index' %}">Home</a>
-                <a class="nav-link" href="{% url 'menu' %}">Menu</a>
-                {% if user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
-                    <a class="nav-link" href="{% url 'cart' %}">Cart({{request.session.cartcount}})</a>
-                    <a class="nav-link" href="{% url 'orders' %}">Orders</a>
-                    {% if user.is_superuser %}
-                        <a class="nav-link" href="/admin">Admin</a>
+        <div id="bg-img"></div>
+        <div id="content">
+            <div>
+                <div class="container-sm">
+                    <h1>Pinocchio's Pizza & Subs</h1>
+                    74 Winthrop Street <br>
+                    Harvard Square
+                </div>
+                {% block details %}
+                {% endblock %}
+                <nav class="nav flex">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                    <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
+                        <a class="nav-link" href="{% url 'cart' %}">Cart<span class="badge bg-secondary">{{request.session.cartcount}}</span></a>
+                        <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+                        {% if user.is_superuser %}
+                            <a class="nav-link" href="/admin">Admin</a>
+                        {% endif %}
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                {% else %}
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
-                {% endif %}
-            </nav>
-        </div>
-        <div>
-            {% block body %}
-            {% endblock %}
+                </nav>
+            </div>
+            <div>
+                {% block body %}
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

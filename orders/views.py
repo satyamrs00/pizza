@@ -1,5 +1,4 @@
 import json
-import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -17,6 +16,12 @@ THINGS=["pizza", "sub", "pasta", "salad", "platter"]
 
 # Create your views here.
 def index(request):
+    try:
+        c = Cart.objects.get(user=request.user)
+        request.session['cartcount'] = len(list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS)))
+    except TypeError:
+        pass
+
     return render(request, "orders/index.html")
 
 def menu(request):
@@ -46,7 +51,7 @@ def register(request):
             u.last_name = form['last_name']
             u.email = form['email']
             u.save()
-            subject = "Pizza - Registeration completed"
+            subject = "Pizza - Registration successful"
             message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here pinopizza.herokuapp.com/account"
             send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=True)
 
@@ -409,7 +414,26 @@ def order(request, order_id):
     })
 
 def my_account(request):
+    if request.method == "PATCH":
+        """update account details"""
+        data = json.loads(request.body)
+        print(data)
+        return JsonResponse({
+            "status": "success"
+        })
+
+    if request.method == "POST":
+        """add address"""
+        form = Addressform(request.POST)
+        if form.is_valid():
+            form = form.cleaned_data
+            a = Address(name=form['name'], addressline=form['addressline'], city=form['city'], state=form['state'], country=form['country'], pin=form['pin'], phone=form['phone'], user=request.user)
+            a.save()
+            return redirect('my_account')
+
+    """show account details and addresses"""
     addresses = Address.objects.filter(user=request.user).order_by("-id")
     return render(request, "orders/my_account.html",{
-        "addresses": addresses
+        "addresses": addresses,
+        "form": Addressform
     })

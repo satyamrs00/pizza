@@ -1,4 +1,5 @@
 from argparse import _MutuallyExclusiveGroup
+from email.mime import image
 from operator import mod
 from statistics import mode
 from django.db import models
@@ -12,6 +13,8 @@ class Pizza(models.Model):
     ]
 
     name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='pizza_images', blank=True)
+    description = models.TextField(blank=True)
     type = models.IntegerField(choices=PIZZA_TYPES, default=0)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
@@ -26,6 +29,8 @@ class Topping(models.Model):
 
 class Sub(models.Model):
     name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='sub_images', blank=True)
+    description = models.TextField(blank=True)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 
@@ -38,20 +43,26 @@ class Addon(models.Model):
 
 class Pasta(models.Model):
     name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='pasta_images', blank=True)
+    description = models.TextField(blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
     def getname(self):
-        return f'{self.name} Pasta'
+        return f'{self.name}'
 
 class Salad(models.Model):
     name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='salad_images', blank=True)
+    description = models.TextField(blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
     def getname(self):
-        return f'{self.name} Salad'
+        return f'{self.name}'
 
 class Platter(models.Model):
     name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='platter_images', blank=True)
+    description = models.TextField(blank=True)
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 

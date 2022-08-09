@@ -7,7 +7,13 @@
 {% block body %}
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="form-floating mb-3">
+                {{field}}
+                {{field.label_tag}}
+                {{field.errors}}
+            </div>
+        {% endfor %}
         <input type="submit" value="Login">
     </form>
 {% endblock %}

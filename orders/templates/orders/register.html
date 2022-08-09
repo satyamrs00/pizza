@@ -7,11 +7,14 @@
 {% block body %}
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
-        <div>
-            {{ form.as_p }}
-        </div>
-        <div>
-            <input type="submit" value="Register">
-        </div>
+        {% for field in form %}
+            <div class="form-floating mb-3">
+                {{field}}
+                {{field.label_tag}}
+                {{field.errors}}
+                {{field.help_text}}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Register">
     </form>
 {% endblock %}
