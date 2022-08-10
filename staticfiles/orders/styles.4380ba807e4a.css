@@ -1,5 +1,5 @@
 body {
-    /* background-image: url(interior.jpg); */
+    /* background-image: url("interior.a93ca5aa3518.jpg"); */
 
     padding: 2rem;
     /* min-height: 100vh; */
@@ -15,7 +15,7 @@ div#addressform {
     background: rgba(255, 255, 255, 0);
 }
 .page-bg {
-    background: url('interior.jpg');
+    background: url("interior.a93ca5aa3518.jpg");
     /* background-size:cover; */
     -webkit-filter: blur(2rem);
     -moz-filter: blur(2rem);

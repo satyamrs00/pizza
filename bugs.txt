@@ -8,3 +8,4 @@ FIXED: (4) reloading order confirmation page repeats the order
 SOLN : redirected to another url
 FIXED: (5) gives server error 500 if adding a new address in production
 SOLN : migrate 
+KNOWN: (6) prod site works for DEBUG=True and not for DEBUG=False
