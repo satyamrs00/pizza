@@ -25,12 +25,12 @@ def index(request):
     return render(request, "orders/index.html")
 
 def menu(request):
-    rpizzas = Pizza.objects.filter(type=0)
-    spizzas = Pizza.objects.filter(type=1)
-    subs = Sub.objects.all()
-    pastas = Pasta.objects.all()
-    salads = Salad.objects.all()
-    platters = Platter.objects.all()
+    rpizzas = Pizza.objects.filter(type=0).order_by('id')
+    spizzas = Pizza.objects.filter(type=1).order_by('id')
+    subs = Sub.objects.all().order_by('id')
+    pastas = Pasta.objects.all().order_by('id')
+    salads = Salad.objects.all().order_by('id')
+    platters = Platter.objects.all().order_by('id')
     return render(request, 'orders/menu.html', {
         "rpizzas": rpizzas,
         "spizzas": spizzas,

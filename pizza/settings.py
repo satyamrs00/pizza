@@ -176,5 +176,8 @@ DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 try:
     config('DJANGO_DEVELOPMENT')
     from .settings_dev import *
+    INSTALLED_APPS.remove('cloudinary_storage')
+    INSTALLED_APPS.remove('cloudinary')
+
 except UndefinedValueError:
     pass
