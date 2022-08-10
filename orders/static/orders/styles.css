@@ -1,8 +1,8 @@
 body {
-    background-image: url(interior.jpg);
-    backdrop-filter: blur(5rem);
-    padding: 20px;
-    min-height: 100vh;
+    /* background-image: url(interior.jpg); */
+
+    padding: 2rem;
+    /* min-height: 100vh; */
 }
 
 div#addressform {
@@ -13,4 +13,23 @@ div#addressform {
 }
 .card li {
     background: rgba(255, 255, 255, 0);
+}
+.page-bg {
+    background: url('interior.jpg');
+    /* background-size:cover; */
+    -webkit-filter: blur(2rem);
+    -moz-filter: blur(2rem);
+    -o-filter: blur(2rem);
+    -ms-filter: blur(2rem);
+    filter: blur(2rem);
+    position: fixed;
+    width: 120%;
+    height: 120%;
+    left: -10%;
+    top: -10%;
+    z-index: -1;
+}
+#msg {
+    color: #DC3545;
+    padding: 0.2rem;
 }

@@ -20,24 +20,24 @@ document.addEventListener('DOMContentLoaded',() => {
                 let pprice = 0;
                 let eprice = 0;
                 let confirmationdiv = document.getElementById('priceconfirmation');
-                confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
 
                 if(data.sizeoptions === true){
                     if (data.missingsize === null){
                         document.getElementById('small').addEventListener('click', () => {
                             pprice = parseFloat(data.smallprice);
-                            confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                            confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
                         })
                         document.getElementById('large').addEventListener('click', () => {
                             pprice = parseFloat(data.largeprice);
-                            confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                            confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
                         })
                     } else if (data.missingsize === "small"){
                         pprice = parseFloat(data.largeprice);
-                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;  
+                        confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;  
                     } else if (data.missingsize === "large"){
                         pprice = parseFloat(data.smallprice);
-                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;  
+                        confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;  
                     }
                 } else {
                     pprice = parseFloat(data.price);
@@ -57,21 +57,17 @@ document.addEventListener('DOMContentLoaded',() => {
                             eprice -= tmp;
                         }
                         before = after;
-                        confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                        confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
                     }
                 });
                 document.getElementById('cartform').onsubmit = () => {
-                    if (data.sizeoptions === true && data.missingsize == null && document.querySelector('input[name="size"]:checked') === null){
-                        document.getElementById('msg').innerHTML = "select a size before adding to cart";
-                        return false;
-                    }
                     if (data.extrasoption === true && data.extrastype === "Toppings" && document.querySelectorAll(`.${data.extrastype}:checked`).length != data.extrasamount){
                         document.getElementById('msg').innerHTML = `select ${data.extrasamount} toppings before adding to cart`;
                         return false;
                     }
                 }
 
-                confirmationdiv.innerHTML = `Price for this item will be : ${pprice + eprice}`;
+                confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
 
                 document.querySelector('.close').addEventListener('click', () => {
                     let name = document.getElementById('itemname');
@@ -80,7 +76,7 @@ document.addEventListener('DOMContentLoaded',() => {
                     form.innerHTML = '';
                 });
                 window.onclick = (event) => {
-                    if (event.target === document.querySelector('#block')) {
+                    if (event.target === document.querySelector('body')) {
                         let name = document.getElementById('itemname');
                         name.innerHTML = '';
                         let form = document.getElementById('cartform');
@@ -123,30 +119,33 @@ function loadcartform(data, addbutton){
 
     if (data.sizeoptions === true){
         if (data.missingsize === null){
-            let sizeh = document.createElement('div');
-            sizeh.innerHTML = 'Select Size';
+            let sizeh = document.createElement('h6');
+            sizeh.innerHTML = 'Select Size:';
             let label1 = document.createElement('label');
+            label1.classList.add('form-check', 'form-check-inline');
             let sizeinput1 = document.createElement('input');
             sizeinput1.setAttribute('type', 'radio');
             sizeinput1.setAttribute('name', 'size');
             sizeinput1.setAttribute('value', 'small');
             sizeinput1.setAttribute('id', 'small');
+            sizeinput1.setAttribute('class', 'form-check-input');
+            sizeinput1.required = true;
             label1.appendChild(sizeinput1);
             label1.innerHTML += 'Small';
-            let br1 = document.createElement('br');
             let label2 = document.createElement('label');
+            label2.classList.add('form-check', 'form-check-inline');
             let sizeinput2 = document.createElement('input');
             sizeinput2.setAttribute('type', 'radio');
             sizeinput2.setAttribute('name', 'size');
             sizeinput2.setAttribute('value', 'large');
             sizeinput2.setAttribute('id', 'large');
+            sizeinput2.setAttribute('class', 'form-check-input');
             label2.appendChild(sizeinput2);
             label2.innerHTML += 'Large';
             let br2 = document.createElement('br');
     
             form.appendChild(sizeh);
             form.appendChild(label1);
-            form.appendChild(br1);
             form.appendChild(label2);
             form.appendChild(br2);
         } else {
@@ -166,10 +165,10 @@ function loadcartform(data, addbutton){
     }
 
     if (data.extrasoption === true){
-        let extrah = document.createElement('div');
-        extrah.innerHTML = `Select ${data.extrastype}`;
+        let extrah = document.createElement('h6');
+        extrah.innerHTML = `Select ${data.extrastype}:`;
         if(data.extrastype === "Toppings"){
-            extrah.innerHTML += `<br> select ${data.extrasamount} items`;
+            extrah.innerHTML += `<br> <span class="fst-italic fw-light">select ${data.extrasamount} items</span>`;
         }else {
             extrah.innerHTML += `<br>`;
         }
@@ -177,9 +176,10 @@ function loadcartform(data, addbutton){
 
         for (let i = 0; i < data.extras.length; i++){
             let elabel = document.createElement('label');
+            elabel.classList.add('form-check');
             let einput = document.createElement('input');
             einput.setAttribute('type', 'checkbox');
-            einput.classList.add(data.extrastype);
+            einput.classList.add(data.extrastype, 'form-check-input');
             einput.setAttribute('name', data.extrastype);
             einput.setAttribute('value', `${data.extrastype}${data.extras[i].id}`);
             elabel.appendChild(einput);
@@ -194,15 +194,19 @@ function loadcartform(data, addbutton){
             form.appendChild(br);
         }
     }
-    let confirmationdiv = document.createElement('div');
+    let confirmationdiv = document.createElement('span');
     confirmationdiv.setAttribute('id', 'priceconfirmation');
+    confirmationdiv.classList.add('fs-5', 'float-start');
     form.appendChild(confirmationdiv);
-    let msg = document.createElement('div');
+    let msg = document.createElement('span');
+    msg.classList.add('float-start');
     msg.setAttribute('id', 'msg');
     form.appendChild(msg);
     let submitbutton = document.createElement('input');
     submitbutton.setAttribute('type', 'submit');
-    submitbutton.setAttribute('value', 'Save');
+    submitbutton.setAttribute('value', 'Save to Cart');
+    submitbutton.classList.add('btn', 'btn-outline-success', 'd-md-inline');
+    submitbutton.style.float = 'right';
     form.appendChild(submitbutton);
     // modalcontentdiv.appendChild(name);
     // modalcontentdiv.appendChild(close);

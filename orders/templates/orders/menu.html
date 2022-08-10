@@ -12,16 +12,14 @@
 {%  block body %}
     <div id="block">
         <h2>Menu</h2>
-        <div class="modal" id="menumodal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="menumodal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        Save to Cart
-                        <span class="close" data-bs-dismiss="modal">&times;</span>
+                        <h5 class="modal-title" id="itemname"></h5>
+                        <span class="close" data-bs-dismiss="modal">×</span>
                     </div>
                     <div class="modal-body">
-                        <div id="itemname">
-                        </div>
                         <form id="cartform" method="post">
                             <!-- {% csrf_token %} -->
                             
@@ -87,14 +85,12 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                            </ul>
-                            <div class="card-footer">
-                                <button data-item="pizza" class="addbutton" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                </ul>
+                                <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
@@ -110,14 +106,12 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                            </ul>
-                            <div class="card-body">
-                                <button data-item="pizza" class="addbutton" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                </ul>
+                                <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
@@ -134,14 +128,12 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                            </ul>
-                            <div class="card-body">
-                                <button data-item="sub" class="addbutton" id="addsub{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                </ul>
+                                <button data-item="sub" class="btn btn-outline-light addbutton float-end" id="addsub{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
@@ -157,13 +149,11 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Price : ${{item.price}}</li>
-                            </ul>
-                            <div class="card-body">
-                                <button data-item="pasta" class="addbutton" id="addpasta{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Price : ${{item.price}}</li>
+                                </ul>
+                                <button data-item="pasta" class="btn btn-outline-light addbutton float-end" id="addpasta{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
@@ -179,13 +169,11 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Price : ${{item.price}}</li>
-                            </ul>
-                            <div class="card-body">
-                                <button data-item="salad" class="addbutton" id="addsalad{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Price : ${{item.price}}</li>
+                                </ul>
+                                <button data-item="salad" class="btn btn-outline-light addbutton float-end" id="addsalad{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
@@ -201,14 +189,12 @@
                             <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text">{{item.description}}</p>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                            </ul>
-                            <div class="card-body">
-                                <button data-item="platter" class="addbutton" id="addplatter{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                </ul>
+                                <button data-item="platter" class="btn btn-outline-light addbutton float-end" id="addplatter{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
                             </div>
                         </div>
                     </div>           
