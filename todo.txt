@@ -1,6 +1,6 @@
 DONE: (1) remove csrf exempt and pass csrf token to js fetch calls
 DONE: (2) modal box should be closed if clicked outside of it
-TODO: (3) make nav bar vertical like in wiki
+WONT: (3) make nav bar vertical like in wiki
 TODO: (4) you could replace toppings field in pizzacombination and addons field in subcombination to extras and reduce html and views.py (item view for post) code
 DONE: (5) dont show a menu item if the price is 0
 DONE: (6) sort item in cart by price or datetime added
@@ -13,6 +13,6 @@ DONE: (12) create a new my account page to show user info
 DONE: (13) add sending email functionality
 TODO: (14) show a 'mark as complete' button for admins that will add a completed datetime to order and also send a email
 DONE: (15) use a text fied for phone numbers and pincode so it can take saved addresses properly
-TODO: (16) let the user edit their profile
+DONE: (16) let the user edit their profile
 TODO: (17) add a favourite section for users to save favourite items
 TODO: (18) make state in address a select input instead of a text input

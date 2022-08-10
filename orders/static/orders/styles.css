@@ -15,7 +15,7 @@ div#addressform {
     background: rgba(255, 255, 255, 0);
 }
 .page-bg {
-    background: url('interior.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('interior.jpg');
     /* background-size:cover; */
     -webkit-filter: blur(2rem);
     -moz-filter: blur(2rem);
@@ -29,7 +29,15 @@ div#addressform {
     top: -10%;
     z-index: -1;
 }
-#msg {
-    color: #DC3545;
+.modal-content {
+    background-color: #9B9B96;
+}
+.modal-footer {
+    justify-content: space-between;
+}
+.close {
+    cursor: pointer;
+}
+.alert-danger {
     padding: 0.2rem;
 }

@@ -7,6 +7,7 @@
 
 {% block head %}
     <script src="{% static 'orders/menu.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'orders/menu.css' %}" type="text/css">
 {% endblock %}
 
 {%  block body %}
@@ -17,7 +18,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="itemname"></h5>
-                        <span class="close" data-bs-dismiss="modal">×</span>
+                        <span class="close fs-1" data-bs-dismiss="modal">×</span>
                     </div>
                     <div class="modal-body">
                         <form id="cartform" method="post">
@@ -64,6 +65,12 @@
                             <input type="submit" value="Save"> -->
                         </form>
                     </div>
+                    <div class="modal-footer">
+                        <span id="priceconfirmation" class="fs-5"></span>
+                        <span id="msg" class="alert alert-danger"></span>
+                        <span></span>
+                        <button id="formsubmit" type="submit" class="btn btn-outline-success text-right">Save to cart</button>
+                    </div>
                 </div>            
             </div>
         </div>
@@ -78,7 +85,7 @@
 
         <div id="rpizza">
             <h3>Regular Pizza</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-flex">
                 {% for item in rpizzas %}
                     <div class="col">
                         <div class="card" style="width: 18rem;">

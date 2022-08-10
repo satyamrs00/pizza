@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded',() => {
             .then(data => {
                 console.log(data);
                 loadcartform(data, addbutton);
+                document.getElementById('formsubmit').addEventListener('click', () => {
+                    document.getElementById('actualsubmitbutton').click();
+                });
                 let modaldiv = document.getElementById('menumodal');
 
                 let pprice = 0;
@@ -62,7 +65,7 @@ document.addEventListener('DOMContentLoaded',() => {
                 });
                 document.getElementById('cartform').onsubmit = () => {
                     if (data.extrasoption === true && data.extrastype === "Toppings" && document.querySelectorAll(`.${data.extrastype}:checked`).length != data.extrasamount){
-                        document.getElementById('msg').innerHTML = `select ${data.extrasamount} toppings before adding to cart`;
+                        document.getElementById('msg').innerHTML = `Select ${data.extrasamount} toppings before adding to cart`;
                         return false;
                     }
                 }
@@ -70,17 +73,15 @@ document.addEventListener('DOMContentLoaded',() => {
                 confirmationdiv.innerHTML = `Price for this item will be : $${pprice + eprice}`;
 
                 document.querySelector('.close').addEventListener('click', () => {
-                    let name = document.getElementById('itemname');
-                    name.innerHTML = '';
-                    let form = document.getElementById('cartform');
-                    form.innerHTML = '';
+                    document.getElementById('itemname').innerHTML = '';
+                    document.getElementById('cartform').innerHTML = '';
+                    document.getElementById('msg').innerHTML = '';
                 });
                 window.onclick = (event) => {
                     if (event.target === document.querySelector('body')) {
-                        let name = document.getElementById('itemname');
-                        name.innerHTML = '';
-                        let form = document.getElementById('cartform');
-                        form.innerHTML = '';
+                        document.getElementById('itemname').innerHTML = '';
+                        document.getElementById('cartform').innerHTML = '';
+                        document.getElementById('msg').innerHTML = '';
                     }
                 }
 
@@ -176,7 +177,7 @@ function loadcartform(data, addbutton){
 
         for (let i = 0; i < data.extras.length; i++){
             let elabel = document.createElement('label');
-            elabel.classList.add('form-check');
+            elabel.classList.add('form-check', 'form-check-inline');
             let einput = document.createElement('input');
             einput.setAttribute('type', 'checkbox');
             einput.classList.add(data.extrastype, 'form-check-input');
@@ -194,20 +195,20 @@ function loadcartform(data, addbutton){
             form.appendChild(br);
         }
     }
-    let confirmationdiv = document.createElement('span');
-    confirmationdiv.setAttribute('id', 'priceconfirmation');
-    confirmationdiv.classList.add('fs-5', 'float-start');
-    form.appendChild(confirmationdiv);
-    let msg = document.createElement('span');
-    msg.classList.add('float-start');
-    msg.setAttribute('id', 'msg');
-    form.appendChild(msg);
+    // let confirmationdiv = document.createElement('span');
+    // confirmationdiv.setAttribute('id', 'priceconfirmation');
+    // confirmationdiv.classList.add('fs-5', 'float-start');
+    // form.appendChild(confirmationdiv);
+    // let msg = document.createElement('span');
+    // msg.classList.add('float-start', 'alert', 'alert-danger');
+    // msg.setAttribute('id', 'msg');
+    // msg.innerHTML = '';
     let submitbutton = document.createElement('input');
     submitbutton.setAttribute('type', 'submit');
-    submitbutton.setAttribute('value', 'Save to Cart');
-    submitbutton.classList.add('btn', 'btn-outline-success', 'd-md-inline');
-    submitbutton.style.float = 'right';
+    submitbutton.setAttribute('id', 'actualsubmitbutton');
+    submitbutton.style.display = 'none';
     form.appendChild(submitbutton);
+    // form.appendChild(msg);
     // modalcontentdiv.appendChild(name);
     // modalcontentdiv.appendChild(close);
     // modalcontentdiv.appendChild(form);

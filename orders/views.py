@@ -417,7 +417,15 @@ def my_account(request):
     if request.method == "PATCH":
         """update account details"""
         data = json.loads(request.body)
-        print(data)
+        if len(User.objects.filter(username=data['username'])) != 0 and User.objects.get(username=data['username']).id != request.user.id:
+            return JsonResponse({
+                "error": "Username already exists"
+            })
+        u = request.user
+        for item in data:
+            setattr(u, item, data.get(item))
+        u.save()
+
         return JsonResponse({
             "status": "success"
         })
