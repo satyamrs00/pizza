@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
@@ -34,14 +34,16 @@ ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.staticfiles',   
+    'cloudinary_storage',
+    'cloudinary',
     'whitenoise.runserver_nostatic',
     'orders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.messages'
 ]
 
 MIDDLEWARE = [
@@ -161,6 +163,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'satyambots@gmail.com'
 EMAIL_HOST_PASSWORD = config('GMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = 'satyambots@gmail.com'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('CLOUD_API_KEY'),
+    'API_SECRET': config('CLOUD_API_SECRET')
+}
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 try:

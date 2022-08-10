@@ -8,3 +8,5 @@ python-decouple
 virtualenv
 psycopg2
 pillow
+django-cloudinary-storage
+cloudinary
