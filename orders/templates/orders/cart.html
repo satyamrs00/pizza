@@ -15,12 +15,12 @@
         <h2>Cart</h2>
         <hr>
         <div>
-            <div class="modal" id="cartmodal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="cartmodal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header py-0">
                             Confirm your order
-                            <span data-bs-dismiss="modal">&times;</span>
+                            <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                         </div>
                         
                         <div class="modal-body">
@@ -73,37 +73,51 @@
                 </div>
             </div>
             {% for item, quantity in items %}
-                <div>
-                    <div>
-                        {{ item.getname }} 
+                <div class="d-flex flex-row justify-content-start ps-md-3 pe-md-3">
+                    <div class="w-25 d-none d-sm-block">
+                        <img class="rounded float-start w-100" src="{{item.getimage.url}}" alt="{{item.getname}}">
                     </div>
-                    <div>
-                        {% for extra in item.toppings.all %}
-                            {{ extra.name }}
-                            {% if not forloop.last %}
-                                ,
-                            {% endif %}
-                        {% endfor %}
-                        {% for extra in item.addons.all %}
-                            {{ extra.name }}
-                        {% endfor %}
+                        
+                    <div class="px-3">
+                        <div class="">
+                            {{ item.getname }} 
+                        </div>
+                        <div class="fst-italic">
+                            {% for extra in item.toppings.all %}
+                                {{ extra.name }}
+                                {% if not forloop.last %}
+                                    ,
+                                {% endif %}
+                            {% endfor %}
+                            {% for extra in item.addons.all %}
+                                {{ extra.name }}
+                            {% endfor %}
+                        </div>
+                        {% if item.size %}
+                            <div>Size : {{ item.size }}</div>
+                        {% endif %} 
                     </div>
-                    {% if item.size %}
-                        <div>Size : {{ item.size }}</div>
-                    {% endif %}
-                    <div>Quantity : {{ quantity }}</div>
-                    <div>Price : ${% multiply item.price quantity %}</div>
-                    <button data-class="{{ item|classname }}" data-id="{{ item.id }}" class="removecart">Remove</button>
+                    <div class="ms-auto">
+                        <div class="">${% multiply item.price quantity %}</div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+                            <button data-class="{{ item|classname }}" data-id="{{ item.id }}" type="button" class="btn btn-outline-light py-0 removecart">
+                                {% if quantity > 1 %}
+                                    <i class="fa fa-minus"></i>
+                                {% else %}
+                                    <i class="fa fa-trash-o"></i>
+                                {% endif %}
+                            </button>
+                            <span class="btn btn-outline-light py-0">{{quantity}}</span>
+                            <button type="button" class="btn btn-outline-light py-0">+</button>
+                          </div>
+                    </div>
                 </div>
                 <hr>
             {% endfor %}
-            <div>
-                Total Price : ${{ cart.price }}
-            </div>
-            <div>
+            <div class="text-end p-3">
                 {% if items|length > 0 %}
-                    <button id="placeorder" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartmodal">
-                        Place Order({{request.session.cartcount}} items)
+                    <button id="placeorder" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#cartmodal">
+                        Place Order (<span style="color: #BE0027;">${{ cart.price }}</span>)
                     </button>
                 {% endif %}
             </div>

@@ -29,9 +29,6 @@ div#addressform {
 .modal-content {
     background-color: #9B9B96;
 }
-.modal-footer {
-    justify-content: space-between;
-}
 .close {
     cursor: pointer;
 }
@@ -42,7 +39,7 @@ div#addressform {
     min-width: 100%;
 }
 nav {
-    min-width: 100vh;
+    min-width: 100%;
 }
 #brandname{
     padding: 1rem;
@@ -53,7 +50,7 @@ nav {
 .navbar{
     padding: 0%;
 }
-.card {
+.card, .modal {
     color: black;
 }
 h2 {

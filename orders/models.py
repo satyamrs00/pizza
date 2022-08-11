@@ -20,6 +20,8 @@ class Pizza(models.Model):
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
     extrascount = models.IntegerField(default=0)
 
+    def getimage(self):
+        return self.image
     def getname(self):
         return f"{self.name} {Pizza.PIZZA_TYPES[self.type][1]} Pizza"
 
@@ -34,6 +36,8 @@ class Sub(models.Model):
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def getimage(self):
+        return self.image
     def getname(self):
         return f'{self.name} Sub'
 
@@ -47,6 +51,8 @@ class Pasta(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def getimage(self):
+        return self.image
     def getname(self):
         return f'{self.name}'
 
@@ -56,6 +62,8 @@ class Salad(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def getimage(self):
+        return self.image
     def getname(self):
         return f'{self.name}'
 
@@ -66,6 +74,8 @@ class Platter(models.Model):
     smallprice = models.DecimalField(decimal_places=2, max_digits=10)
     largeprice = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def getimage(self):
+        return self.image
     def getname(self):
         return f'{self.name} Dinner Platter'
 
@@ -78,6 +88,8 @@ class PizzaCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getimage(self):
+        return self.pizza.image
     def getname(self):
         return f'{self.pizza.name} {Pizza.PIZZA_TYPES[self.pizza.type][1]} Pizza'
 
@@ -87,6 +99,8 @@ class SubCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getimage(self):
+        return self.sub.image
     def getname(self):
         return f'{self.sub.name} Sub'
 
@@ -95,6 +109,8 @@ class PlatterCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
     
+    def getimage(self):
+        return self.platter.image
     def getname(self):
         return f'{self.platter.name} Dinner Platter'
 

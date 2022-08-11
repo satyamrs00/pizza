@@ -7,7 +7,7 @@
 
 {% block head %}
     <script src="{% static 'orders/menu.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'orders/menu.css' %}" type="text/css">
+    <!-- <link rel="stylesheet" href="{% static 'orders/menu.css' %}" type="text/css"> -->
 {% endblock %}
 
 {%  block body %}
@@ -18,7 +18,7 @@
         <div class="modal fade" id="menumodal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header py-0">
                         <h5 class="modal-title" id="itemname"></h5>
                         <span class="close fs-1" data-bs-dismiss="modal">×</span>
                     </div>
@@ -67,17 +67,16 @@
                             <input type="submit" value="Save"> -->
                         </form>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer justify-content-start">
                         <span id="priceconfirmation" class="fs-5"></span>
                         <span id="msg" class="alert alert-danger"></span>
-                        <span></span>
-                        <button id="formsubmit" type="submit" class="btn btn-outline-success text-right">Save to cart</button>
+                        <button id="formsubmit" type="submit" class="btn btn-outline-success text-right ms-auto align-self-center">Save to cart</button>
                     </div>
                 </div>            
             </div>
         </div>
 
-        <nav class="navbar navbar-expand-lg sticky-top" id="menu-navbar" style="background-color: #9B9B96">
+        <nav class="navbar navbar-expand-md sticky-top" id="menu-navbar" style="background-color: #9B9B96">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Menu</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menunavbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,10 +103,10 @@
         <div>
         </div>
 
-        <div data-bs-spy="scroll" data-bs-target="#menu-navbar"  data-bs-smooth-scroll="true" class="scrollspy-example rounded-2 blockbody" tabindex="0">
+        <div data-bs-spy="scroll" data-bs-target="#menu-navbar"  data-bs-smooth-scroll="false" class="blockbody" tabindex="0">
             <div id="rpizza">
                 <h2>Regular Pizza</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-flex">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in rpizzas %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
@@ -128,7 +127,7 @@
             </div>
             <div id="spizza">
                 <h2>Sicilian Pizza</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in spizzas %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
@@ -150,7 +149,7 @@
             
             <div id="sub">
                 <h2>Subs</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in subs %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
@@ -171,7 +170,7 @@
             </div>
             <div id="pasta">
                 <h2>Pasta</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in pastas %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
@@ -191,7 +190,7 @@
             </div>
             <div id="salad">
                 <h2>Salad</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in salads %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
@@ -211,7 +210,7 @@
             </div>
             <div id="platter">
                 <h2>Dinner Platter</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     {% for item in platters %}
                         <div class="col">
                             <div class="card" style="width: 18rem;">
