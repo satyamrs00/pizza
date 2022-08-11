@@ -1,8 +1,5 @@
 body {
-    /* background-image: url(interior.jpg); */
-
-    padding: 2rem;
-    /* min-height: 100vh; */
+    color: #EBEBE6;
 }
 
 div#addressform {
@@ -40,4 +37,33 @@ div#addressform {
 }
 .alert-danger {
     padding: 0.2rem;
+}
+#content, #layout {
+    min-width: 100%;
+}
+nav {
+    min-width: 100vh;
+}
+#brandname{
+    padding: 1rem;
+}
+.blockbody {
+    padding: 1rem;
+}
+.navbar{
+    padding: 0%;
+}
+.card {
+    color: black;
+}
+h2 {
+    padding: 1rem 0rem;
+}
+.hr {
+    padding-right: 6rem;
+}
+.active {
+    border: 5px solid black;
+    border-width: 0px 0px 2px 0px;
+    border-color: black;
 }

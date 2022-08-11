@@ -16,30 +16,44 @@
     <body>
         <div class="page-bg"></div>
         <div id="content">
-            <div>
-                <div>
+            <div id="layout">
+                <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #9B9B96">
+                    <div class="container-fluid">
+                        <a class="navbar-brand fs-4" href="#">Pinocchio's</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse navbar-light" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-link" href="{% url 'index' %}">Home</a>
+                                <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                                {% if user.is_authenticated %}
+                                    <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
+                                    <a class="nav-link" href="{% url 'cart' %}">Cart<span class="badge bg-secondary">{{request.session.cartcount}}</span></a>
+                                    <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+                                    {% if user.is_superuser %}
+                                        <a class="nav-link" href="/admin">Admin</a>
+                                    {% endif %}
+                                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                                {% else %}
+                                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                                {% endif %}
+                            </div>
+                        </div> 
+                    </div>
+                </nav>
+                <div id="brandname" class="position-relative">
                     <h1>Pinocchio's Pizza & Subs</h1>
                     74 Winthrop Street <br>
                     Harvard Square
+                    <img class="position-absolute top-0 end-0 m-3" src="{% static 'orders\pinocchio_72.gif' %}" alt="">
+                </div>
+                <div class="hr">
+                    <hr>
                 </div>
                 {% block details %}
                 {% endblock %}
-                <nav class="nav flex">
-                    <a class="nav-link" href="{% url 'index' %}">Home</a>
-                    <a class="nav-link" href="{% url 'menu' %}">Menu</a>
-                    {% if user.is_authenticated %}
-                        <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
-                        <a class="nav-link" href="{% url 'cart' %}">Cart<span class="badge bg-secondary">{{request.session.cartcount}}</span></a>
-                        <a class="nav-link" href="{% url 'orders' %}">Orders</a>
-                        {% if user.is_superuser %}
-                            <a class="nav-link" href="/admin">Admin</a>
-                        {% endif %}
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    {% else %}
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    {% endif %}
-                </nav>
             </div>
             <div>
                 {% block body %}

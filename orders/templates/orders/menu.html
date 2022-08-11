@@ -12,7 +12,9 @@
 
 {%  block body %}
     <div id="block">
-        <h2>Menu</h2>
+        <div class="blockbody">
+            <h2>Menu</h2>
+        </div>
         <div class="modal fade" id="menumodal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
@@ -75,138 +77,159 @@
             </div>
         </div>
 
+        <nav class="navbar navbar-expand-lg sticky-top" id="menu-navbar" style="background-color: #9B9B96">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Menu</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menunavbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse navbar-light justify-content-around" id="menunavbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="#rpizza">&nbsp;&nbsp;Regular Pizza&nbsp;&nbsp;</a>
+                        <div class="vr"></div>
+                        <a class="nav-link" href="#spizza">&nbsp;&nbsp;Sicillian Pizza&nbsp;&nbsp;</a>
+                        <div class="vr"></div>
+                        <a class="nav-link" href="#sub">&nbsp;&nbsp;Sub&nbsp;&nbsp;</a>
+                        <div class="vr"></div>
+                        <a class="nav-link" href="#pasta">&nbsp;&nbsp;Pasta&nbsp;&nbsp;</a>
+                        <div class="vr"></div>
+                        <a class="nav-link" href="#salad">&nbsp;&nbsp;Salad&nbsp;&nbsp;</a>
+                        <div class="vr"></div>
+                        <a class="nav-link" href="#platter">&nbsp;&nbsp;Dinner Platter&nbsp;&nbsp;</a>
+                    </div>
+                </div> 
+            </div>
+        </nav>
+
         <div>
-            <a href="#rpizza">Pizza</a>
-            <a href="#sub">Sub</a>
-            <a href="#pasta">Pasta</a>
-            <a href="#salad">Salad</a>
-            <a href="#platter">Dinner Platter</a>
         </div>
 
-        <div id="rpizza">
-            <h3>Regular Pizza</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-flex">
-                {% for item in rpizzas %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                                </ul>
-                                <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+        <div data-bs-spy="scroll" data-bs-target="#menu-navbar"  data-bs-smooth-scroll="true" class="scrollspy-example rounded-2 blockbody" tabindex="0">
+            <div id="rpizza">
+                <h2>Regular Pizza</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-flex">
+                    {% for item in rpizzas %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                        <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                    </ul>
+                                    <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div id="spizza">
-            <h3>Sicilian Pizza</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for item in spizzas %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                                </ul>
-                                <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+            <div id="spizza">
+                <h2>Sicilian Pizza</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for item in spizzas %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                        <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                    </ul>
+                                    <button data-item="pizza" class="btn btn-outline-light addbutton float-end" id="addpizza{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        
-        <div id="sub">
-            <h3>Subs</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for item in subs %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                                </ul>
-                                <button data-item="sub" class="btn btn-outline-light addbutton float-end" id="addsub{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+            
+            <div id="sub">
+                <h2>Subs</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for item in subs %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                        <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                    </ul>
+                                    <button data-item="sub" class="btn btn-outline-light addbutton float-end" id="addsub{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div id="pasta">
-            <h3>Pasta</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for item in pastas %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Price : ${{item.price}}</li>
-                                </ul>
-                                <button data-item="pasta" class="btn btn-outline-light addbutton float-end" id="addpasta{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+            <div id="pasta">
+                <h2>Pasta</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for item in pastas %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Price : ${{item.price}}</li>
+                                    </ul>
+                                    <button data-item="pasta" class="btn btn-outline-light addbutton float-end" id="addpasta{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div id="salad">
-            <h3>Salad</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for item in salads %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Price : ${{item.price}}</li>
-                                </ul>
-                                <button data-item="salad" class="btn btn-outline-light addbutton float-end" id="addsalad{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+            <div id="salad">
+                <h2>Salad</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for item in salads %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Price : ${{item.price}}</li>
+                                    </ul>
+                                    <button data-item="salad" class="btn btn-outline-light addbutton float-end" id="addsalad{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div id="platter">
-            <h3>Dinner Platter</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {% for item in platters %}
-                    <div class="col">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item.getname}}</h5>
-                                <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
-                                    <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
-                                </ul>
-                                <button data-item="platter" class="btn btn-outline-light addbutton float-end" id="addplatter{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+            <div id="platter">
+                <h2>Dinner Platter</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for item in platters %}
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{item.image.url}}" class="card-img-top" alt="{{item.image}}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{item.getname}}</h5>
+                                    <p class="card-text fw-lighter lh-sm fst-italic">{{item.description}}</p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{% if item.smallprice != 0 %}Small : ${{item.smallprice}}{% endif %}</li>
+                                        <li class="list-group-item">{% if item.largeprice != 0 %}Large : ${{item.largeprice}}{% endif %}</li>
+                                    </ul>
+                                    <button data-item="platter" class="btn btn-outline-light addbutton float-end" id="addplatter{{item.id}}" data-bs-toggle="modal" data-bs-target="#menumodal">Add to Cart</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>           
-                {% endfor %}
+                        </div>           
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        </div>    
     </div>
 {% endblock %}

@@ -198,6 +198,11 @@ def item(request, thing, id):
         except Cart.DoesNotExist:
             c = Cart(user=request.user)
             c.save()
+        except TypeError:
+            return render(request, 'orders/login.html', {
+                'form': LoginForm,
+                'msg': 'You need to login to add items to cart'
+            })
 
         thingcartrel = "Cart" + cthing
         thingcartrel = globals()[thingcartrel]

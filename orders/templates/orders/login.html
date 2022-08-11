@@ -5,15 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-floating mb-3">
-                {{field}}
-                {{field.label_tag}}
-                {{field.errors}}
-            </div>
-        {% endfor %}
-        <input type="submit" value="Login">
-    </form>
+    <div class="blockbody">
+        <span class="alert alert-danger fade show mb-3" id="msg">{{msg}}</span>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-floating mb-3">
+                    {{field}}
+                    {{field.label_tag}}
+                    {{field.errors}}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Login">
+        </form>
+    </div>
 {% endblock %}

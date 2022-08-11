@@ -66,23 +66,25 @@
             </div>
         </div>
     </div>
-    <div>
-        <h4>Personal Information</h4>
-        <div>Username : {{user.username}}</div>
-        <div>Name : {{user.first_name}} {{user.last_name}}</div>
-        <div>Email Address : {{user.email}}</div>
-        <button id="edit" data-bs-toggle="modal" data-bs-target="#accountmodal">Edit</button>
-    </div>
-    <div>
-        <h4>Saved Addresses</h4>
-        {% for address in addresses %}
-        {{address.name}}<br>
-        {{address.addressline}}<br>
-        {{address.city}} - {{address.pin}}<br>
-        {{address.state}}, {{address.country}}<br>
-        Ph : {{address.phone}}<br>
-        <hr>
-        {% endfor %}
-        <button id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal">Add Address</button>
+    <div class="blockbody">
+        <div>
+            <h4>Personal Information</h4>
+            <div>Username : {{user.username}}</div>
+            <div>Name : {{user.first_name}} {{user.last_name}}</div>
+            <div>Email Address : {{user.email}}</div>
+            <button id="edit" data-bs-toggle="modal" data-bs-target="#accountmodal">Edit</button>
+        </div>
+        <div>
+            <h4>Saved Addresses</h4>
+            {% for address in addresses %}
+            {{address.name}}<br>
+            {{address.addressline}}<br>
+            {{address.city}} - {{address.pin}}<br>
+            {{address.state}}, {{address.country}}<br>
+            Ph : {{address.phone}}<br>
+            <hr>
+            {% endfor %}
+            <button id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal">Add Address</button>
+        </div>    
     </div>
 {% endblock %}
