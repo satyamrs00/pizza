@@ -115,6 +115,15 @@
                     </div>
                 </div>
                 <hr>
+            {% empty %}
+                <div class="text-center">
+                    <i class="fa fa-meh-o p-5" style="font-size: 10rem; cursor: default;"></i>
+                    <div>
+                        <a href="{% url 'menu' %}">
+                            Add something to cart
+                        </a>
+                    </div>
+                </div>
             {% endfor %}
             <div class="text-end p-3">
                 {% if items|length > 0 %}

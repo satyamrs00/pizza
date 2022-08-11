@@ -36,28 +36,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const placeorder = document.getElementById('placeorder');
-    placeorder.addEventListener('click', () => {
+    if (placeorder !== null) {
+        placeorder.addEventListener('click', () => {
 
-        const select = document.getElementById('selectaddress');
-        const form = document.getElementById('addressform').innerHTML;
-        select.addEventListener('change', () => {
-            if (select.value === "addaddress"){
-                document.getElementById('addressform').style.display = 'block';
-                document.getElementById('addressform').innerHTML = form;
-            } else {
-                document.getElementById('addressform').style.display = "none";              
-                document.getElementById('addressform').innerHTML = '';
+            const select = document.getElementById('selectaddress');
+            const form = document.getElementById('addressform').innerHTML;
+            select.addEventListener('change', () => {
+                if (select.value === "addaddress"){
+                    document.getElementById('addressform').style.display = 'block';
+                    document.getElementById('addressform').innerHTML = form;
+                } else {
+                    document.getElementById('addressform').style.display = "none";              
+                    document.getElementById('addressform').innerHTML = '';
+                }
+            });
+
+            document.getElementById('orderform').onsubmit = () => {
+                if(document.querySelector('input[name="paymethod"]:checked') === null){
+                    document.getElementById('msg').innerHTML = "Select a payment method";
+                    return false;
+                }
+                return true;
             }
         });
-
-        document.getElementById('orderform').onsubmit = () => {
-            if(document.querySelector('input[name="paymethod"]:checked') === null){
-                document.getElementById('msg').innerHTML = "Select a payment method";
-                return false;
-            }
-            return true;
-        }
-    });
+    }
 });
 
 function getCookie(name) {

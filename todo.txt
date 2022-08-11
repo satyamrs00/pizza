@@ -18,3 +18,5 @@ TODO: (17) add a favourite section for users to save favourite items
 TODO: (18) make state in address a select input instead of a text input
 DONE: (19) implement repeat item in cart through the + button
 TODO: (20) add infinite scroll to orders page and saved addresses page
+TODO: (21) add a delete/edit button to saved addresses
+TODO: (22) use font awesome icons for form controls

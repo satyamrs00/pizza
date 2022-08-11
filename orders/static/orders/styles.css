@@ -67,3 +67,12 @@ h2 {
 i{
     cursor: pointer;
 }
+a {
+    color: #EBEBE6;
+    text-decoration: none;
+} 
+a:hover, a:focus {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    color: #EBEBE6;
+}
