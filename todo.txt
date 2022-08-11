@@ -16,4 +16,5 @@ DONE: (15) use a text fied for phone numbers and pincode so it can take saved ad
 DONE: (16) let the user edit their profile
 TODO: (17) add a favourite section for users to save favourite items
 TODO: (18) make state in address a select input instead of a text input
-TODO: (19) implement repeat item in cart through the + button
+DONE: (19) implement repeat item in cart through the + button
+TODO: (20) add infinite scroll to orders page and saved addresses page

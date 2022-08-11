@@ -17,6 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const addbuttons = document.querySelectorAll('.addcart');
+    [...addbuttons].forEach(addbutton => {
+        addbutton.addEventListener('click', () => {
+            fetch(`/item/${addbutton.dataset.class}/${addbutton.dataset.id}`, {
+                method: "PUT",
+                credentials: 'same-origin',
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                window.location.reload();
+            });
+        });
+    });
+
     const placeorder = document.getElementById('placeorder');
     placeorder.addEventListener('click', () => {
 

@@ -88,6 +88,8 @@ class PizzaCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getsize(self):
+        return 'S' if self.size == 'small' else 'L'
     def getimage(self):
         return self.pizza.image
     def getname(self):
@@ -99,6 +101,8 @@ class SubCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
 
+    def getsize(self):
+        return 'S' if self.size == 'small' else 'L'
     def getimage(self):
         return self.sub.image
     def getname(self):
@@ -109,6 +113,8 @@ class PlatterCombination(models.Model):
     size = models.CharField(null=True, max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
     
+    def getsize(self):
+        return 'S' if self.size == 'small' else 'L'
     def getimage(self):
         return self.platter.image
     def getname(self):

@@ -82,7 +82,7 @@
                         <div class="">
                             {{ item.getname }} 
                         </div>
-                        <div class="fst-italic">
+                        <div class="fst-italic fw-lighter">
                             {% for extra in item.toppings.all %}
                                 {{ extra.name }}
                                 {% if not forloop.last %}
@@ -93,8 +93,8 @@
                                 {{ extra.name }}
                             {% endfor %}
                         </div>
-                        {% if item.size %}
-                            <div>Size : {{ item.size }}</div>
+                        {% if item.getsize %}
+                            <div>Size : {{ item.getsize }}</div>
                         {% endif %} 
                     </div>
                     <div class="ms-auto">
@@ -108,7 +108,9 @@
                                 {% endif %}
                             </button>
                             <span class="btn btn-outline-light py-0">{{quantity}}</span>
-                            <button type="button" class="btn btn-outline-light py-0">+</button>
+                            <button data-class="{{ item|classname }}" data-id="{{ item.id }}" type="button" class="btn btn-outline-light py-0 addcart">
+                                <i class="fa fa-plus"></i>
+                            </button>
                           </div>
                     </div>
                 </div>

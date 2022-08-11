@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    document.getElementById('editaccountform').onsubmit = () => {
+    document.getElementById('save').addEventListener('click', () => {
+        document.getElementById('actualsave').click();
+    });
+    document.getElementById('editaccountform').addEventListener('submit', () => {
         document.getElementById('accountmodal').style.display = "none";
         fetch("/account", {
             method: "PATCH",
@@ -24,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         });
         return false;
-    };
+    });
 })
 
 function getCookie(name) {

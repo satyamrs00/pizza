@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="modal" id="addressmodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="addressmodal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -36,9 +36,9 @@
     <div class="modal fade" id="accountmodal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header py-0">
                     Edit Personal Info
-                    <span data-bs-dismiss="modal">&times;</span>
+                    <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                 </div>
                 <div class="modal-body">
                     <form id="editaccountform">
@@ -59,32 +59,54 @@
                             <label>Email Address</label>
                         </div>
                         <div>
-                            <button id="save" type="submit">Save</button>
+                            <button class="d-none" id="actualsave" type="submit"></button>
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="save" type="button" class="btn btn-outline-light">Save</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="blockbody">
         <div>
-            <h4>Personal Information</h4>
-            <div>Username : {{user.username}}</div>
-            <div>Name : {{user.first_name}} {{user.last_name}}</div>
-            <div>Email Address : {{user.email}}</div>
-            <button id="edit" data-bs-toggle="modal" data-bs-target="#accountmodal">Edit</button>
+            <h4>
+                Personal Information &nbsp;
+                <i class="fa fa-pencil" id="edit" data-bs-toggle="modal" data-bs-target="#accountmodal"></i>
+            </h4>
+            <div class="container-md d-flex">
+                <div class="w-25">Username</div> 
+                <div class="pe-3">:</div> 
+                <div>{{user.username}}</div>
+            </div>
+            <div class="container-md d-flex">
+                <div class="w-25">Name</div> 
+                <div class="pe-3">:</div> 
+                <div>{{user.first_name}} {{user.last_name}}</div>
+            </div>
+            <div class="container-md d-flex">
+                <div class="w-25">Email Address</div> 
+                <div class="pe-3">:</div> 
+                <div>{{user.email}}</div>
+            </div>
         </div>
+        <hr>
         <div>
-            <h4>Saved Addresses</h4>
+            <h4>
+                Saved Addresses &nbsp;
+                <i class="fa fa-plus" id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal"></i>
+            </h4>
             {% for address in addresses %}
-            {{address.name}}<br>
-            {{address.addressline}}<br>
-            {{address.city}} - {{address.pin}}<br>
-            {{address.state}}, {{address.country}}<br>
-            Ph : {{address.phone}}<br>
-            <hr>
+                <div class="container-md">
+                    {{address.name}}<br>
+                    {{address.addressline}}<br>
+                    {{address.city}} - {{address.pin}}<br>
+                    {{address.state}}, {{address.country}}<br>
+                    Ph : {{address.phone}}<br>
+                    <hr>
+                </div>
             {% endfor %}
-            <button id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal">Add Address</button>
         </div>    
     </div>
 {% endblock %}

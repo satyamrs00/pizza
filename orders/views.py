@@ -19,8 +19,8 @@ def index(request):
     try:
         c = Cart.objects.get(user=request.user)
         request.session['cartcount'] = len(list(chain.from_iterable(getattr(c, 'cart'+thing+'_set').all() for thing in THINGS)))
-    except TypeError:
-        pass
+    except:
+        request.session['cartcount'] = 0
 
     return render(request, "orders/index.html")
 
@@ -87,6 +87,32 @@ def logout_view(request):
     return redirect('index')
 
 def item(request, thing, id):
+    if request.method == "PUT":
+        """repeat the same item"""
+        c = Cart.objects.get(user=request.user)
+
+        if thing in ['PizzaCombination', 'SubCombination', 'PlatterCombination']:
+            thing = thing[:-11]
+
+        thingcartrel = "Cart" + thing
+        thingcartrel = globals()[thingcartrel]
+
+        for item in thingcartrel.objects.filter(cart=c):
+            if getattr(item, thing.lower()).id == id:
+                r = item
+
+        r.quantity += 1
+        r.save()
+
+        c.price += getattr(r, thing.lower()).price
+        c.save()
+
+        request.session['cartcount'] += 1
+
+        return JsonResponse({
+            "success" : "added to cart"
+        })
+
     if request.method == "PATCH":
         """remove the item from cart"""
 

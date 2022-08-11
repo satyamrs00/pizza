@@ -64,3 +64,6 @@ h2 {
     border-width: 0px 0px 2px 0px;
     border-color: black;
 }
+i{
+    cursor: pointer;
+}
