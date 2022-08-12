@@ -11,22 +11,58 @@
         <hr>
         <div>
             {% for items, order in allitems %}
-                <a href="{% url 'order' order.id %}">
-                    <div>
-                        {% for item, quantity in items %}
-                            {{item.getname}} × {{quantity}} {% multiply item.price quantity %}
-                            <br>
-                        {% endfor %}
-                        {% if order.completed_time %}
-                            Completed
-                        {% else %}
-                            Pending
+                <div class="d-flex position-relative">
+                    <div id="ordersphotosdiv" class="d-none d-sm-block p-3">
+                        {% if items|length >= 1 %}
+                            <div class="">
+                                <img class="w-100" src="{{items.0.0.getimage.url}}" alt="{{items.0.0.getname}}">
+                            </div>
                         {% endif %}
-                        {{order.price}}
-                        <br>Placed on : {{order.placedtime|date:"d F Y H:i"}}
-                        <hr>
+                        {% if items|length >= 2 %}
+                            <div class="">
+                                <img class="w-100" src="{{items.1.0.getimage.url}}" alt="{{items.1.0.getname}}">
+                            </div>
+                        {% endif %}
+                        {% if items|length > 2 %}
+                            <div class="">
+                                + {{items|length|add:"-2"}} more items
+                            </div>
+                        {% endif %}
                     </div>
-                </a>
+                    <div class="flex-grow-1 p-3">
+                        {% for item, quantity in items %}
+                            <div class="d-flex justify-content-between w-100">
+                                <div>
+                                    {{quantity}} × {{item.getname}}
+                                </div>
+                                <div>
+                                    ${% multiply item.price quantity %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a class="stretched-link" href="{% url 'order' order.id %}">&nbsp;</a>
+                            </div>
+                            <div style="color: #BE0027; background-color: white;">
+                                ${{order.price}}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
+                                {{order.placedtime|date:"d F Y"}} at {{order.placedtime|date:"H:i"}}
+                            </div>
+                            <div class="fst-italic fw-lighter" style="background-color: #9B9B96; color: #464644; font-size: 0.9rem;">
+                                {% if order.completedtime %}
+                                    Delivered
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
             {% empty %}
                 <div class="text-center">
                     <i class="fa fa-meh-o p-5" style="font-size: 10rem; cursor: default;"></i>

@@ -13,9 +13,9 @@
     <div class="modal fade" id="addressmodal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header py-0">
                     Add Address
-                    <span data-bs-dismiss="modal">&times;</span>
+                    <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                 </div>
                 <div class="modal-body">
                     <form action="{% url 'my_account' %}" method="post">
@@ -26,8 +26,11 @@
                                 {{field.label_tag}}
                             </div>
                         {% endfor %}
-                        <input type="submit" value="Save">
+                        <input class="d-none" id="actualaddaddresssave" type="submit">
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-light" id="addaddresssave">Save</button>
                 </div>
             </div>
         </div>

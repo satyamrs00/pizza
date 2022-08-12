@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('save').addEventListener('click', () => {
         document.getElementById('actualsave').click();
     });
+    document.getElementById('addaddresssave').addEventListener('click', () => {
+        document.getElementById('actualaddaddresssave').click();
+    });
+    
     document.getElementById('editaccountform').addEventListener('submit', () => {
         document.getElementById('accountmodal').style.display = "none";
         fetch("/account", {
