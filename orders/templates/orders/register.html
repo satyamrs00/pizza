@@ -1,22 +1,46 @@
 {% extends "orders/layout.html" %}
+{% load static %}
 
 {% block title %}
     Register
 {% endblock %}
 
+{% block head %}
+    <script src="{% static 'orders/register.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 {% block body %}
     <div class="blockbody">
-        <form action="{% url 'register' %}" method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-floating mb-3">
-                    {{field}}
-                    {{field.label_tag}}
-                    {{field.errors}}
-                    {{field.help_text}}
-                </div>
-            {% endfor %}
-            <input type="submit" value="Register">
-        </form>    
+        <h2>Register</h2>
+        <hr>
+        
+        <div class="row">
+            <div class="p-3 col-12 col-sm-10 col-md-10 col-lg-6">
+                <form id="registerform" action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-floating mb-3">
+                            {{field}}
+                            {{field.label_tag}}
+                            {{field.errors}}
+                            {% if field.help_text %}
+                                <div class="helptext">{{field.help_text}}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <span class="mb-3 w-100 px-3 alert alert-danger" id="msg"></span>
+                    <input class="btn btn-outline-light w-100" type="submit" value="Register">
+                </form>
+            </div>
+            <div class="d-none d-lg-inline-block col-lg-1 p-3 text-center" style="min-height: 100%;">
+                <div class="vr" style="height: 100%;"></div>
+            </div>
+            <div class="d-none d-lg-block col-lg-5 h-100">
+                <img class="w-100" src="{% static 'orders/output-onlinepngtools (1).png' %}" alt="Pizza png">
+            </div>
+            <div class="d-block d-lg-none col-12 w-100">
+                <img class="w-100" src="{% static 'orders/output-onlinepngtools (2).png' %}" alt="Pizza png">
+            </div>
+        </div>
     </div>
 {% endblock %}

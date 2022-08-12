@@ -84,5 +84,18 @@ a:hover, a:focus {
     line-height: 1rem;
 } */
 form {
-    color: #000;
+    color: #212529;
+}
+
+#registerform, #loginform {
+    padding: 1rem 1rem;
+    background-color: #9B9B96;
+    border-radius: 0.5rem;
+}
+.helptext {
+    color: #EBEBE6;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: lighter;
 }

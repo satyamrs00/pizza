@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from .models import User
 
@@ -34,6 +34,7 @@ class Addressform(forms.Form):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
             visible.field.widget.attrs['placeholder'] = visible.field.label
+            visible.field.widget.attrs['required'] = 'required'
 
     name = forms.CharField(max_length=200, label='Name')
     addressline = forms.CharField(label="Address", widget=forms.Textarea)

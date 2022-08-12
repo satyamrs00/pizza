@@ -1,4 +1,5 @@
 import json
+from django.db.utils import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -42,24 +43,36 @@ def menu(request):
 
 def register(request):
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form = form.cleaned_data
+        form = json.loads(request.body)
+        try:
+            if form['password1'] != form['password2']:
+                return JsonResponse({
+                    "success": False,
+                    "msg" : "Passwords do not match !!!"
+                })
+
             u = User(username = form['username'])
             u.set_password(form['password1'])
-            u.first_name = form['first_name']
-            u.last_name = form['last_name']
+            u.first_name = form['first_name'].capitalize()
+            if form['last_name']:
+                u.last_name = form['last_name'].capitalize()
             u.email = form['email']
             u.save()
+            
             subject = "Pizza - Registration successful"
             message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here pinopizza.herokuapp.com/account"
             send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=True)
 
             login(request, u)
 
-            return redirect('index')
-        
-        return redirect('register')
+            return JsonResponse({
+                "success": True
+            })
+        except IntegrityError:
+            return JsonResponse({
+                "success": False,
+                'msg' : 'username already exists !!!'
+            })
 
     return render(request, 'orders/register.html', {
         'form': RegistrationForm
@@ -414,6 +427,7 @@ def cart(request):
         "form": Addressform
     })
 
+@login_required
 def orders(request):
     """show all orders in breif"""
     orders = Order.objects.filter(user=request.user).order_by('-placedtime')
@@ -431,6 +445,7 @@ def orders(request):
         "allitems": list(zip(allitems, orders))
     })
 
+@login_required
 def order(request, order_id):
     """show details of one order"""
     o = Order.objects.get(id=order_id)
@@ -447,6 +462,7 @@ def order(request, order_id):
         "items": list(zip(items, quantities))
     })
 
+@login_required
 def my_account(request):
     if request.method == "PATCH":
         """update account details"""
