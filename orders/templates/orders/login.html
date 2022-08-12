@@ -1,22 +1,42 @@
 {% extends "orders/layout.html" %}
+{% load static %}
 
 {% block title %}
     Login
 {% endblock %}
 
+{% block head %}
+    <script src="{% static 'orders/login.js' %}"></script>
+{% endblock %}
+
 {% block body %}
     <div class="blockbody">
-        <span class="alert alert-danger fade show mb-3" id="msg">{{msg}}</span>
-        <form action="{% url 'login' %}" method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-floating mb-3">
-                    {{field}}
-                    {{field.label_tag}}
-                    {{field.errors}}
-                </div>
-            {% endfor %}
-            <input type="submit" value="Login">
-        </form>
+        <h2>Login</h2>
+        <hr>
+        <div class="row">
+            <div class="p-3 col-12 col-sm-10 col-md-8 col-lg-6">
+                <form id="loginform" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-floating mb-3">
+                            {{field}}
+                            {{field.label_tag}}
+                            {{field.errors}}
+                        </div>
+                    {% endfor %}
+                    <span class="alert alert-danger px-4" id="msg"></span>
+                    <input class="btn btn-outline-light w-100 mb-3" type="submit" value="Login">
+                </form>
+            </div>
+            <div class="d-none d-md-inline-block col-md-1 p-3 text-center" style="min-height: 100%;">
+                <div class="vr" style="height: 100%;"></div>
+            </div>
+            <div class="d-none d-md-block col-md-3 col-lg-5 h-100">
+                <img height="258px" src="{% static 'orders/output-onlinepngtools.png' %}" alt="Pizza png">
+            </div>
+            <div class="d-block d-md-none col-12 w-100">
+                <img class="w-100" src="{% static 'orders/output-onlinepngtools2.png' %}" alt="Pizza png">
+            </div>
+        </div>
     </div>
 {% endblock %}

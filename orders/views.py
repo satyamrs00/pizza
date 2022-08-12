@@ -67,14 +67,17 @@ def register(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        data = json.loads(request.body)
+        username = data['username']
+        password = data['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request,user)
-            return redirect('index')
+            return JsonResponse({"success": True})
+            # return redirect('index')
         else:
-            return HttpResponse('username and password do not match')
+            return JsonResponse({"success": False})
+            # return HttpResponse('username and password do not match')
 
     return render(request, "orders/login.html", {
         "form": LoginForm
