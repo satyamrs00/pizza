@@ -44,15 +44,15 @@
                             <div>
                                 <a class="stretched-link" href="{% url 'order' order.id %}">&nbsp;</a>
                             </div>
-                            <div style="color: #BE0027; background-color: white;">
+                            <div class="p-0 p-sm-1" style="color: #BE0027; background-color: white;">
                                 ${{order.price}}
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
-                                {{order.placedtime|date:"d F Y"}} at {{order.placedtime|date:"H:i"}}
+                                Placed : {{order.placedtime|date:"d F Y"}} at {{order.placedtime|date:"H:i"}}
                             </div>
-                            <div class="fst-italic fw-lighter" style="background-color: #9B9B96; color: #464644; font-size: 0.9rem;">
+                            <div class="fst-italic fw-lighter p-0 p-sm-1" style="background-color: #9B9B96; color: #464644; font-size: 0.9rem;">
                                 {% if order.completedtime %}
                                     Delivered
                                 {% else %}

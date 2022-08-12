@@ -79,3 +79,10 @@ a:hover, a:focus {
 #ordersphotosdiv {
     width: 15%;
 }
+/* .form-control {
+    padding: 0.25rem 1rem !important;
+    line-height: 1rem;
+} */
+form {
+    color: #000;
+}

@@ -7,31 +7,70 @@
 
 {% block body %}
     <div class="blockbody">
-        Reference id : {{o.id}} <br>
-        Items:<br>
+        <h2>
+            Order 
+            <span class="fst-italic fw-lighter fs-3">#{{o.id}}</span>
+        </h2>
+        <hr>
+        <h3>Items</h3>
+        <hr>
+
         {% for item, quantity in items %}
-            <div>
-                {{item.getname}}
-                {{quantity}}
-                {% multiply item.price quantity %}
+            <div class="d-flex flex-row justify-content-start ps-md-3 pe-md-3">
+                <div class="w-25 d-none d-sm-block">
+                    <img class="rounded float-start w-100" src="{{item.getimage.url}}" alt="{{item.getname}}">
+                </div>
+                    
+                <div class="px-3">
+                    <div class="">
+                        {{quantity}} × {{ item.getname }} 
+                    </div>
+                    <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
+                        {% for extra in item.toppings.all %}
+                            {{ extra.name }}
+                            {% if not forloop.last %}
+                                ,
+                            {% endif %}
+                        {% endfor %}
+                        {% for extra in item.addons.all %}
+                            {{ extra.name }}
+                        {% endfor %}
+                    </div>
+                    {% if item.getsize %}
+                        <div>Size : {{ item.getsize }}</div>
+                    {% endif %} 
+                </div>
+                <div class="ms-auto">
+                    <div class="">${% multiply item.price quantity %}</div>
+                </div>
             </div>
-            <div>
-                {% for extra in item.toppings.all %}
-                    {{ extra.name }}
-                {% endfor %}
-                {% for extra in item.addons.all %}
-                    {{ extra.name }}
-                {% endfor %}
+            <hr>
+        {% empty %}
+            <div class="text-center">
+                <i class="fa fa-meh-o p-5" style="font-size: 10rem; cursor: default;"></i>
+                <div>
+                    <a href="{% url 'menu' %}">
+                        Add something to cart
+                    </a>
+                </div>
             </div>
         {% endfor %}
-        <div>Total order amount : {{o.price}}</div>
-        <div>
-            {% if o.completedtime %}
-                Order was delivered on {{o.completedtime|date:"d F Y H:i"}}
-            {% else %}
-                Order is still pending
-            {% endif %}
+        <div class="float-end px-3 btn btn-light disabled" style="color: #BE0027;">
+            Total : ${{o.price}}
         </div>
+        <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
+            <div>
+                Placed : {{o.placedtime|date:"d F Y"}} at {{o.placedtime|date:"H:i"}}
+            </div>
+            <div>
+                {% if o.completedtime %}
+                    Delivered : {{o.completedtime|date:"d F Y"}} at {{o.completedtime|date:"H:i"}}
+                {% else %}
+                    Still pending
+                {% endif %}
+            </div>
+        </div>
+        <hr>
         <div>
             Delivery to : <br>
             {{o.address.name}}<br>
@@ -40,6 +79,5 @@
             {{o.address.state}}, {{o.address.country}}<br>
             Ph : {{o.address.phone}}<br>
         </div>
-        <div>Order made on : {{o.placedtime|date:"d F Y H:i"}}</div>
     </div>
 {% endblock %}

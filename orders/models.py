@@ -201,5 +201,5 @@ class Address(models.Model):
     state = models.CharField(max_length=200, default="")
     country = models.CharField(max_length=200, default="")
     pin = models.PositiveIntegerField(default=0)
-    phone = models.PositiveBigIntegerField(default=0)
+    phone = models.CharField(default="", max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
