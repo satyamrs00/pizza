@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // remove items from cart
     const removebuttons = document.querySelectorAll('.removecart');
     [...removebuttons].forEach(removebutton => {
         removebutton.addEventListener('click', () => {
@@ -17,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // add items to cart
     const addbuttons = document.querySelectorAll('.addcart');
     [...addbuttons].forEach(addbutton => {
         addbutton.addEventListener('click', () => {
@@ -35,10 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    
     const placeorder = document.getElementById('placeorder');
     if (placeorder !== null) {
         placeorder.addEventListener('click', () => {
 
+            // load address form if chosen
             const select = document.getElementById('selectaddress');
             const form = document.getElementById('addressform').innerHTML;
             select.addEventListener('change', () => {
@@ -51,13 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            document.getElementById('orderform').onsubmit = () => {
-                if(document.querySelector('input[name="paymethod"]:checked') === null){
-                    document.getElementById('msg').innerHTML = "Select a payment method";
-                    return false;
-                }
-                return true;
-            }
+            // press form submit button to place order
+            document.getElementById('confirmorder').addEventListener('click', () => {
+                document.getElementById('actualconfirmorder').click();
+            }); 
         });
     }
 });

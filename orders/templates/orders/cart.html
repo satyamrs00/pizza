@@ -29,7 +29,7 @@
                                 {% csrf_token %}
                                 <label class="form-label">
                                     Select an address : 
-                                    <select class="form-select" name="address" id="selectaddress">
+                                    <select class="form-select" name="address" id="selectaddress" required>
                                         <option value="address" selected disabled>Select</option>
                                         {% for address in addresses %}
                                             <option value="address{{address.id}}">
@@ -50,24 +50,26 @@
                                 <div>Choose a payment method : </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="paymethod" value="0">UPI
+                                        <input class="form-check-input" type="radio" name="paymethod" value="0" required>UPI
                                     </label><br>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="paymethod" value="1">Wallets
+                                        <input class="form-check-input" type="radio" name="paymethod" value="1" required>Wallets
                                     </label><br>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="paymethod" value="2">Credit / Debit / ATM Card
+                                        <input class="form-check-input" type="radio" name="paymethod" value="2" required>Credit / Debit / ATM Card
                                     </label><br>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="paymethod" value="3">Net Banking<br>
+                                        <input class="form-check-input" type="radio" name="paymethod" value="3" required>Net Banking<br>
                                     </label><br>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="paymethod" value="4">Cash on Delivery<br>
+                                        <input class="form-check-input" type="radio" name="paymethod" value="4" required>Cash on Delivery<br>
                                     </label><br>
                                 </div>
-                                <div id="msg"></div>
-                                <button type="submit" id="confirmorder">Confirm Order</button>
-                            </form>    
+                                <button class="d-none" type="submit" id="actualconfirmorder"></button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-light" id="confirmorder">Confirm Order</button>
                         </div>
                     </div>
                 </div>

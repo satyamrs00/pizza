@@ -23,9 +23,9 @@
                                 <img class="w-100" src="{{items.1.0.getimage.url}}" alt="{{items.1.0.getname}}">
                             </div>
                         {% endif %}
-                        {% if items|length > 2 %}
+                        {% if items|countitemsbyquantity > 2 %}
                             <div class="">
-                                + {{items|length|add:"-2"}} more items
+                                + {{items|countitemsbyquantity|add:"-2"}} more items
                             </div>
                         {% endif %}
                     </div>
