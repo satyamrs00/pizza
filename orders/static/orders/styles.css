@@ -97,5 +97,23 @@ form {
     padding: 0.5rem;
     font-size: 0.9rem;
     font-style: italic;
-    font-weight: lighter;
+    font-weight: ligaxer;
+}
+#location {
+    border: 1px solid rgba(235,235,231, 0.25);
+}
+@media screen and (max-width: 576px) {
+    #location {
+        border-width: 1px 0px 0px 0px;
+    }
+}
+@media screen and (min-width: 576px) {
+    #location {
+        border-width: 0px 0px 0px 1px;
+    }
+}
+@media screen and (min-width: 992px) {
+    #location {
+        border-width: 0px 1px 0px 1px;
+    }
 }
