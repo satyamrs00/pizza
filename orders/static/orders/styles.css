@@ -117,3 +117,73 @@ form {
         border-width: 0px 1px 0px 1px;
     }
 }
+
+
+input[type="radio"],
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="radio"] + span,
+input[type="checkbox"] + span {
+  padding-left: 1.5rem;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+input[type="radio"] + span:before,
+input[type="checkbox"] + span:before,
+input[type="radio"] + span:after,
+input[type="checkbox"] + span:after {
+    width: 1rem;
+    height: 1rem;
+    bottom: 15%;
+    left: 0;
+    line-height: 1rem;
+    text-align: center;
+    position: absolute;
+}
+
+/* Radios
+----------------------------------------------------------------------------------------------------*/
+
+input[type="radio"] + span:before {
+    font-family: FontAwesome;
+    content: "\f111";
+    display: inline-block;
+    vertical-align: baseline;
+    color: #4B4B46;
+}
+
+input[type="radio"] + span:hover:before {
+    color: black;
+}
+
+input[type="radio"]:checked + span:before {
+    color: black;
+    content: "\f140";
+}
+
+/* Checkboxes
+----------------------------------------------------------------------------------------------------*/
+
+input[type="checkbox"] + span:before {
+    font-family: FontAwesome;
+    content: "\f0c8";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: baseline;
+    color: #4B4B46;
+}
+input[type="checkbox"] + span:hover:before {
+    color: black;
+    /* border: 1px solid #eee;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 0.4em #fafafa, inset 0 0 0 1em #eee; */
+}
+
+input[type="checkbox"]:checked + span:before {
+    color: black;
+    content: "\f14a";
+}

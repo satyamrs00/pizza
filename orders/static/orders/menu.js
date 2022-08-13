@@ -123,7 +123,7 @@ function loadcartform(data, addbutton){
             let sizeh = document.createElement('h6');
             sizeh.innerHTML = 'Select Size:';
             let label1 = document.createElement('label');
-            label1.classList.add('form-check', 'form-check-inline');
+            label1.classList.add('form-check', 'form-check-inline', 'px-0');
             let sizeinput1 = document.createElement('input');
             sizeinput1.setAttribute('type', 'radio');
             sizeinput1.setAttribute('name', 'size');
@@ -132,9 +132,9 @@ function loadcartform(data, addbutton){
             sizeinput1.setAttribute('class', 'form-check-input');
             sizeinput1.required = true;
             label1.appendChild(sizeinput1);
-            label1.innerHTML += 'Small';
+            label1.innerHTML += '<span>Small</span>';
             let label2 = document.createElement('label');
-            label2.classList.add('form-check', 'form-check-inline');
+            label2.classList.add('form-check', 'form-check-inline', 'px-0');
             let sizeinput2 = document.createElement('input');
             sizeinput2.setAttribute('type', 'radio');
             sizeinput2.setAttribute('name', 'size');
@@ -142,7 +142,7 @@ function loadcartform(data, addbutton){
             sizeinput2.setAttribute('id', 'large');
             sizeinput2.setAttribute('class', 'form-check-input');
             label2.appendChild(sizeinput2);
-            label2.innerHTML += 'Large';
+            label2.innerHTML += '<span>Large</span>';
             let br2 = document.createElement('br');
     
             form.appendChild(sizeh);
@@ -167,6 +167,7 @@ function loadcartform(data, addbutton){
 
     if (data.extrasoption === true){
         let extrah = document.createElement('h6');
+        extrah.classList.add('mt-2');
         extrah.innerHTML = `Select ${data.extrastype}:`;
         if(data.extrastype === "Toppings"){
             extrah.innerHTML += `<br> <span class="fst-italic fw-light" style="font-size: 0.9rem;">select ${data.extrasamount} items</span>`;
@@ -177,14 +178,14 @@ function loadcartform(data, addbutton){
 
         for (let i = 0; i < data.extras.length; i++){
             let elabel = document.createElement('label');
-            elabel.classList.add('form-check', 'form-check-inline');
+            elabel.classList.add('form-check', 'form-check-inline', 'px-0');
             let einput = document.createElement('input');
             einput.setAttribute('type', 'checkbox');
             einput.classList.add(data.extrastype, 'form-check-input');
             einput.setAttribute('name', data.extrastype);
             einput.setAttribute('value', `${data.extrastype}${data.extras[i].id}`);
             elabel.appendChild(einput);
-            elabel.innerHTML += data.extras[i].name;
+            elabel.innerHTML += `<span>${data.extras[i].name}</span>`;
             let pricespan = document.createElement('span');
             if (data.extras[i].price != 0){
                 pricespan.innerHTML = data.extras[i].price;
