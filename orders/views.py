@@ -362,6 +362,7 @@ def cart(request):
         c.save()
 
     if request.method == "POST":
+
         """place order"""
         data = request.POST
         if not data.get('address'):
@@ -400,8 +401,9 @@ def cart(request):
                 oo.quantity = oneco.quantity
                 oo.save()
                 oneco.delete()
-                c.price = 0
-                c.save()
+                
+        c.price = 0
+        c.save()
         
         request.session['cartcount'] = 0
         subject = "Pizza - Order Confirmation"
@@ -447,19 +449,62 @@ def orders(request):
 
 @login_required
 def order(request, order_id):
+    if request.method == 'POST':
+        """repeat order"""
+        data = request.POST
+        if not data.get('address'):
+            return HttpResponse('select address')
+        
+        if not data.get('paymethod') or data.get("paymethod") == "":
+            return HttpResponse('select payment method')
+
+        if data.get('address') == "addaddress":
+            form = Addressform(request.POST)
+            if form.is_valid():
+                form = form.cleaned_data
+                a = Address(name=form['name'], addressline=form['addressline'], city=form['city'], state=form['state'], country=form['country'], pin=form['pin'], phone=form['phone'], user=request.user)
+                a.save()
+        else:
+            a = Address.objects.get(id=data.get('address')[7:])
+            
+        o1 = Order.objects.get(id=order_id)
+        o2 = Order(user=request.user, payment_mode=data.get('paymethod'), address=a, price=o1.price)
+        o2.save()
+        for thing in THINGS:
+            orders = "Order" + thing.capitalize()
+            orderc = globals()[orders]
+
+            oo1 = orderc.objects.filter(order=o1)
+            for oneoo in oo1:
+                oo2 = orderc(order=o2)
+                setattr(oo2, thing, getattr(oneoo, thing))
+                oo2.save()
+                oo2.quantity = oneoo.quantity
+                oo2.save()
+
+        subject = "Pizza - Order Confirmation"
+        message = "Thank you for ordering from Pinochhio's Pizza. Your order is currently being prepared and will be delivered to you within 40 minutes"
+        send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[request.user.email], fail_silently=True)
+        return redirect('placed')
+
+
     """show details of one order"""
     o = Order.objects.get(id=order_id)
     items = []
     quantities = []
     itemrels = list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS))
     itemrels = sorted(itemrels, key=operator.attrgetter('datetime_added'), reverse=True)
+    addresses = Address.objects.filter(user=request.user)
+
     for item in itemrels:
         items.append(getattr(item, item.__class__.__name__.lower()[5:]))
         quantities.append(item.quantity)
 
     return render(request, "orders/order.html", {
         "o" : o,
-        "items": list(zip(items, quantities))
+        "items": list(zip(items, quantities)),
+        'addresses' : addresses,
+        'form': Addressform
     })
 
 @login_required

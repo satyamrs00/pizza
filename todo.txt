@@ -20,4 +20,4 @@ DONE: (19) implement repeat item in cart through the + button
 TODO: (20) add infinite scroll to orders page and saved addresses page
 DONE: (21) add a delete/edit button to saved addresses
 TODO: (22) use font awesome icons for form controls
-TODO: (23) implement one click reorder
+DONE: (23) implement one click reorder

@@ -1,8 +1,13 @@
 {% extends "orders/layout.html" %}
 {% load tags %}
+{% load static %}
 
 {% block title %}
     Order
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'orders/order.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
@@ -12,6 +17,67 @@
             <span class="fst-italic fw-lighter fs-3">#{{o.id}}</span>
         </h2>
         <hr>
+
+        <div class="modal fade" id="cartmodal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header py-0">
+                        <h5 class="modal-title">Confirm your order</h5>
+                        <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="fs-5">Total price for this order is ${{o.price}}</div>
+                        <form action="{% url 'order' o.id %}" method="post" id="orderform">
+                            {% csrf_token %}
+                            <label class="form-label mt-2">
+                                <select class="form-select" name="address" id="selectaddress" required>
+                                    <option value="address" selected disabled>Select an address</option>
+                                    {% for address in addresses %}
+                                        <option value="address{{address.id}}">
+                                            {{address.name}}, {{address.addressline}}, {{address.city}} - {{address.pin}}, {{address.state}}, {{address.country}}, Ph : {{address.phone}}
+                                        </option>
+                                    {% endfor %}
+                                    <option value="addaddress" id="addaddress">Add another address</option>
+                                </select>
+                            </label>
+                            <div id="addressform">
+                                {% for field in form %}
+                                <div class="form-floating mb-3">
+                                    {{field}}
+                                    {{field.label_tag}}
+                                </div>
+                            {% endfor %}
+                            </div>
+                            <h6>Choose a payment method : </h6>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="0" required>UPI
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="1" required>Wallets
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="2" required>Credit / Debit / ATM Card
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="3" required>Net Banking<br>
+                                </label><br>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="paymethod" value="4" required>Cash on Delivery<br>
+                                </label><br>
+                            </div>
+                            <button class="d-none" type="submit" id="actualconfirmorder"></button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-light" id="confirmorder">Confirm Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <h3>Items</h3>
         <hr>
 
@@ -55,8 +121,8 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="d-flex">
-            <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
+        <div class="row row-cols-1 row-cols-sm-2 w-100">
+            <div class="fst-italic fw-lighter mb-2" style="font-size: 0.9rem;">
                 <div>
                     Placed : {{o.placedtime|date:"d F Y"}} at {{o.placedtime|date:"H:i"}}
                 </div>
@@ -68,8 +134,10 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="ms-auto p-1 align-self-center btn btn-light disabled" style="color: #BE0027;">
-                Total : ${{o.price}}
+            <div class="align-self-center text-end">
+                <button id="repeatorder" data-bs-toggle="modal" data-bs-target="#cartmodal" class="p-2 btn btn-light">
+                    Reorder (<span style="color: #BE0027;">${{o.price}}</span>)
+                </button>
             </div>
         </div>
         <hr>

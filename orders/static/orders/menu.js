@@ -169,7 +169,7 @@ function loadcartform(data, addbutton){
         let extrah = document.createElement('h6');
         extrah.innerHTML = `Select ${data.extrastype}:`;
         if(data.extrastype === "Toppings"){
-            extrah.innerHTML += `<br> <span class="fst-italic fw-light">select ${data.extrasamount} items</span>`;
+            extrah.innerHTML += `<br> <span class="fst-italic fw-light" style="font-size: 0.9rem;">select ${data.extrasamount} items</span>`;
         }else {
             extrah.innerHTML += `<br>`;
         }

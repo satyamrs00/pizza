@@ -19,18 +19,17 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header py-0">
-                            Confirm your order
+                            <h5 class="modal-title">Confirm your order</h5>
                             <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                         </div>
                         
                         <div class="modal-body">
-                            <div>Total price for this order is ${{cart.price}}</div>
+                            <div class="fs-5">Total price for this order is ${{cart.price}}</div>
                             <form action="{% url 'cart' %}" method="post" id="orderform">
                                 {% csrf_token %}
-                                <label class="form-label">
-                                    Select an address : 
+                                <label class="form-label mt-2">
                                     <select class="form-select" name="address" id="selectaddress" required>
-                                        <option value="address" selected disabled>Select</option>
+                                        <option value="address" selected disabled>Select an address</option>
                                         {% for address in addresses %}
                                             <option value="address{{address.id}}">
                                                 {{address.name}}, {{address.addressline}}, {{address.city}} - {{address.pin}}, {{address.state}}, {{address.country}}, Ph : {{address.phone}}
@@ -47,7 +46,7 @@
                                     </div>
                                 {% endfor %}
                                 </div>
-                                <div>Choose a payment method : </div>
+                                <h6>Choose a payment method : </h6>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" name="paymethod" value="0" required>UPI
