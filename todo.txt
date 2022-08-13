@@ -11,12 +11,12 @@ DONE: (10) show select address in confirmation modal box and change place order 
 DONE: (11) give a link to access admin page
 DONE: (12) create a new my account page to show user info
 DONE: (13) add sending email functionality
-TODO: (14) show a 'mark as complete' button for admins that will add a completed datetime to order and also send a email
+DONE: (14) show a 'mark as complete' button for admins that will add a completed datetime to order and also send a email
 DONE: (15) use a text fied for phone numbers and pincode so it can take saved addresses properly
 DONE: (16) let the user edit their profile
 TODO: (17) add a favourite section for users to save favourite items
 TODO: (18) make state in address a select input instead of a text input
 DONE: (19) implement repeat item in cart through the + button
 TODO: (20) add infinite scroll to orders page and saved addresses page
-TODO: (21) add a delete/edit button to saved addresses
+DONE: (21) add a delete/edit button to saved addresses
 TODO: (22) use font awesome icons for form controls
