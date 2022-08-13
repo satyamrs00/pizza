@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    console.log(document.getElementById('msg').innerHTML);
     if (document.getElementById('msg').innerHTML === "" || document.getElementById('msg').innerHTML === null) {
-        console.log('here');
         document.getElementById('msg').style.display = "none";
     }
 

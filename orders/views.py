@@ -1,6 +1,6 @@
 import json
 from django.db.utils import IntegrityError
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from itertools import chain
@@ -60,7 +60,7 @@ def register(request):
             u.save()
             
             subject = "Pizza - Registration successful"
-            message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here pinopizza.herokuapp.com/account"
+            message = "Thank you for registering at Pinochhio's Pizza. Your account is currently active and you can view your profile here https://pinopizza.herokuapp.com/account"
             send_mail(subject=subject, message=message, from_email=DEFAULT_FROM_EMAIL, recipient_list=[form['email']], fail_silently=True)
 
             login(request, u)
@@ -71,7 +71,7 @@ def register(request):
         except IntegrityError:
             return JsonResponse({
                 "success": False,
-                'msg' : 'username already exists !!!'
+                'msg' : 'Username already exists !!!'
             })
 
     return render(request, 'orders/register.html', {
@@ -464,20 +464,49 @@ def order(request, order_id):
 
 @login_required
 def my_account(request):
+    if request.method == 'DELETE':
+        """delete address"""
+
+        data = json.loads(request.body)
+        a = Address.objects.get(id=int(data.get('id')))
+        a.user = None
+        a.save()
+        print(data)
+
+        return JsonResponse({
+            "success": True
+        })
+
+    if request.method == "PUT":
+        """edit address"""
+
+        data = json.loads(request.body)
+        a = Address.objects.get(id=data.get('id'))
+        for item in data:
+            setattr(a, item, data.get(item))
+        a.save()
+
+        return JsonResponse({
+            'success': True
+        })
+
     if request.method == "PATCH":
         """update account details"""
+
         data = json.loads(request.body)
-        if len(User.objects.filter(username=data['username'])) != 0 and User.objects.get(username=data['username']).id != request.user.id:
+        if len(User.objects.filter(username=data['username'])) != 0 and User.objects.get(username=data['username']) != request.user:
             return JsonResponse({
-                "error": "Username already exists"
+                "success": False,
+                "error": "Username already exists !!!"
             })
+
         u = request.user
         for item in data:
             setattr(u, item, data.get(item))
         u.save()
 
         return JsonResponse({
-            "status": "success"
+            "success": True
         })
 
     if request.method == "POST":
@@ -494,4 +523,19 @@ def my_account(request):
     return render(request, "orders/my_account.html",{
         "addresses": addresses,
         "form": Addressform
+    })
+
+@login_required
+def address(request, id):
+    """return address details"""
+    a = Address.objects.get(id=id)
+    return JsonResponse({
+        'id': a.id,
+        'name': a.name,
+        'addressline': a.addressline,
+        'city': a.city,
+        'state': a.state,
+        'country': a.country,
+        'pin': a.pin,
+        'phone': str(a.phone)
     })

@@ -55,19 +55,21 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="float-end px-3 btn btn-light disabled" style="color: #BE0027;">
-            Total : ${{o.price}}
-        </div>
-        <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
-            <div>
-                Placed : {{o.placedtime|date:"d F Y"}} at {{o.placedtime|date:"H:i"}}
+        <div class="d-flex">
+            <div class="fst-italic fw-lighter" style="font-size: 0.9rem;">
+                <div>
+                    Placed : {{o.placedtime|date:"d F Y"}} at {{o.placedtime|date:"H:i"}}
+                </div>
+                <div>
+                    {% if o.completedtime %}
+                        Delivered : {{o.completedtime|date:"d F Y"}} at {{o.completedtime|date:"H:i"}}
+                    {% else %}
+                        Still pending
+                    {% endif %}
+                </div>
             </div>
-            <div>
-                {% if o.completedtime %}
-                    Delivered : {{o.completedtime|date:"d F Y"}} at {{o.completedtime|date:"H:i"}}
-                {% else %}
-                    Still pending
-                {% endif %}
+            <div class="ms-auto p-1 align-self-center btn btn-light disabled" style="color: #BE0027;">
+                Total : ${{o.price}}
             </div>
         </div>
         <hr>

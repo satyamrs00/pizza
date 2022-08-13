@@ -18,7 +18,8 @@
                     <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'my_account' %}" method="post">
+                    <!-- <span class="mb-3 alert alert-danger" id="addressmsg"></span> -->
+                    <form action="{% url 'my_account' %}" method="post" class="addressform-imp" id="addaddressform">
                         {% csrf_token %}
                         {% for field in form %}
                             <div class="form-floating mb-3">
@@ -30,6 +31,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-outline-light" id="deleteaddress"><i class="fa fa-trash-o"></i></button>
                     <button class="btn btn-outline-light" id="addaddresssave">Save</button>
                 </div>
             </div>
@@ -44,8 +46,9 @@
                     <span data-bs-dismiss="modal" class="close fs-1">&times;</span>
                 </div>
                 <div class="modal-body">
+                    <span class="alert alert-danger" id="accountmsg"></span>
                     <form id="editaccountform">
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-3 mt-3">
                             <input placeholder="username" class="form-control" id="username" type="text" name="username" value="{{user.username}}" required>
                             <label>Username</label>
                         </div>
@@ -102,7 +105,8 @@
             </h4>
             {% for address in addresses %}
                 <div class="container-md">
-                    {{address.name}}<br>
+                    {{address.name}}
+                    <i class="fa fa-pencil px-2 editaddress" data-id="{{address.id}}" data-bs-toggle="modal" data-bs-target="#addressmodal"></i><br>
                     {{address.addressline}}<br>
                     {{address.city}} - {{address.pin}}<br>
                     {{address.state}}, {{address.country}}<br>

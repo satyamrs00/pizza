@@ -12,5 +12,6 @@ urlpatterns = [
     path('orders', views.orders, name="orders"),
     path('order/<int:order_id>', views.order, name="order"),
     path('account', views.my_account, name="my_account"),
-    path('placed', views.placed, name="placed")
+    path('placed', views.placed, name="placed"),
+    path('address/<int:id>', views.address, name="address"),
 ]
