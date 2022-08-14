@@ -23,4 +23,4 @@ DONE: (22) use font awesome icons for form controls
 DONE: (23) implement one click reorder
 DONE: (24) use multi line select options for better look (changed it from select to radio)
 DONE: (25) check max length of phone number and pincode(ph max-16 min-7    pin max-10 min-4)
-TODO: (26) remove that red flag from front of "cart"
+DONE: (26) remove that red flag from front of "cart"
