@@ -27,10 +27,21 @@
                     </div>
                     
                     <div class="modal-body">
-                        <div class="fs-5">Total price for this order is ${{o.price}}</div>
+                        <div class="fs-5">Total price for this order is ${{o.price}}</div><hr>
                         <form action="{% url 'order' o.id %}" method="post" id="orderform">
                             {% csrf_token %}
-                            <label class="form-label mt-2">
+                            {% for address in addresses %}
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="address" value="address{{address.id}}" required id="selectaddress">
+                                    <span>{{address.name}} - {{address.phone}} <br> {{address.addressline}} <br> {{address.city}}, {{address.atate}}, {{address.country}} - {{address.pin}}</span>
+                                </label>
+                                <hr>
+                            {% endfor %}
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="address" value="addaddress" id="selectaddress">
+                                <span>Add another address</span>
+                            </label><hr>
+                            <!-- <label class="form-label mt-2">
                                 <select class="form-select" name="address" id="selectaddress" required>
                                     <option value="address" selected disabled>Select an address</option>
                                     {% for address in addresses %}
@@ -40,7 +51,7 @@
                                     {% endfor %}
                                     <option value="addaddress" id="addaddress">Add another address</option>
                                 </select>
-                            </label>
+                            </label> -->
                             <div id="addressform">
                                 {% for field in form %}
                                 <div class="form-floating mb-3">

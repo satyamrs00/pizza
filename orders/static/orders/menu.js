@@ -164,6 +164,7 @@ function loadcartform(data, addbutton){
             form.appendChild(size);
         }
     }
+    form.innerHTML += '<hr>';
 
     if (data.extrasoption === true){
         let extrah = document.createElement('h6');

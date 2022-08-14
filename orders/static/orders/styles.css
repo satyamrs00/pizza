@@ -138,7 +138,7 @@ input[type="radio"] + span:after,
 input[type="checkbox"] + span:after {
     width: 1rem;
     height: 1rem;
-    bottom: 15%;
+    top: .3rem;
     left: 0;
     line-height: 1rem;
     text-align: center;
