@@ -41,5 +41,5 @@ class Addressform(forms.Form):
     city = forms.CharField(max_length=200, label="City")
     state = forms.CharField(max_length=200, label="State")
     country = forms.CharField(max_length=200, label="Country")
-    pin = forms.IntegerField(label="Pin-Code", max_value=999999, min_value=100000)
-    phone = forms.CharField(min_length=10, label="Phone Number")
+    pin = forms.IntegerField(label="Pin-Code", max_value=9999999999, min_value=1000)
+    phone = forms.CharField(min_length=7, max_length=16, label="Phone Number")
