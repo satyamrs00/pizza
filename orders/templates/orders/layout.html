@@ -25,18 +25,23 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse navbar-light" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
-                                <a class="nav-link" href="{% url 'index' %}">Home</a>
-                                <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                            <div class="navbar-nav w-100">
                                 {% if user.is_authenticated %}
+                                    <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                                    <a class="nav-link" href="{% url 'cart' %}">
+                                        Cart&nbsp;(<span class="" style="color: #BE0027;">{{request.session.cartcount}}</span>)
+                                    </a>
+                                    <div class="d-none d-md-block">
+                                        &nbsp;&nbsp;<div class="vr h-100"></div>&nbsp;&nbsp;
+                                    </div>
                                     <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
-                                    <a class="nav-link" href="{% url 'cart' %}">Cart&nbsp;<span class="py-1 pb-1 px-2 badge text-bg-danger">{{request.session.cartcount}}</span></a>
-                                    <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+                                    <a class="nav-link me-auto" href="{% url 'orders' %}">Orders</a>
                                     {% if user.is_superuser %}
                                         <a class="nav-link" href="/admin">Admin</a>
                                     {% endif %}
-                                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                                 {% else %}
+                                    <a class="nav-link me-auto" href="{% url 'menu' %}">Menu</a>
                                     <a class="nav-link" href="{% url 'login' %}">Login</a>
                                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                                 {% endif %}
