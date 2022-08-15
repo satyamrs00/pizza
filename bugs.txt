@@ -10,3 +10,4 @@ FIXED: (5) gives server error 500 if adding a new address in production
 SOLN : migrate 
 FIXED: (6) prod site works for DEBUG=True and not for DEBUG=False
 FIXED: (7) gives server error 500 if add to cart without logging in
+FIXED: (8) accessing an order of very high number that doesnt exist gives server error 500

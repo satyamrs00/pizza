@@ -1,6 +1,6 @@
 import json
 from django.db.utils import IntegrityError
-from django.http import HttpResponse, JsonResponse, QueryDict
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from itertools import chain
@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import operator
 import decimal
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
 
 from orders.forms import Addressform, RegistrationForm, LoginForm
 from orders.models import Addon, PizzaCombination, Sub, Topping, User, Pizza, Pasta, Salad, Platter, Cart, SubCombination, PlatterCombination, CartPizza, CartSub, CartPasta, CartSalad, CartPlatter, WeightedM2M, OrderPizza, OrderSub, OrderPasta, OrderSalad, OrderPlatter, Address, Order
@@ -162,7 +163,10 @@ def item(request, thing, id):
         })
 
     cthing = thing.capitalize()
-    thingcls = globals()[cthing]        
+    try:
+        thingcls = globals()[cthing]        
+    except KeyError:
+        return render(request, "orders/404.html")
 
     if request.method == "POST":
         """add the item to cart"""
@@ -281,7 +285,10 @@ def item(request, thing, id):
         return redirect('menu')
 
     """get information about the item to load the form to add to cart"""
-    p = thingcls.objects.get(id=id)
+    try:
+        p = thingcls.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'orders/404.html')
 
     try:
         p.smallprice
@@ -489,7 +496,11 @@ def order(request, order_id):
 
 
     """show details of one order"""
-    o = Order.objects.get(id=order_id)
+    try:
+        o = Order.objects.get(id=order_id)
+    except ObjectDoesNotExist:
+        return render(request, 'orders/order.html')
+
     items = []
     quantities = []
     itemrels = list(chain.from_iterable(getattr(o, 'order'+thing+'_set').all() for thing in THINGS))
@@ -573,7 +584,10 @@ def my_account(request):
 @login_required
 def address(request, id):
     """return address details"""
-    a = Address.objects.get(id=id)
+    try:
+        a = Address.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return render(request, 'orders/404.html')
     return JsonResponse({
         'id': a.id,
         'name': a.name,
