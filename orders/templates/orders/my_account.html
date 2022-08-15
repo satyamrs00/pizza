@@ -76,6 +76,11 @@
         </div>
     </div>
     <div class="blockbody">
+        <h2>
+            <i class="fa fa-user"></i>
+            My Account
+        </h2>
+        <hr>
         <div>
             <h4>
                 Personal Information &nbsp;
@@ -103,17 +108,21 @@
                 Saved Addresses &nbsp;
                 <i class="fa fa-plus" id="addaddress" data-bs-toggle="modal" data-bs-target="#addressmodal"></i>
             </h4>
-            {% for address in addresses %}
-                <div class="container-md">
-                    {{address.name}}
-                    <i class="fa fa-pencil px-2 editaddress" data-id="{{address.id}}" data-bs-toggle="modal" data-bs-target="#addressmodal"></i><br>
-                    {{address.addressline}}<br>
-                    {{address.city}} - {{address.pin}}<br>
-                    {{address.state}}, {{address.country}}<br>
-                    Ph : {{address.phone}}<br>
-                    <hr>
+            <div class="container-md">
+                <div class="row row-cols-1 row-cols-lg-2 justify-content-between">
+                    {% for address in addresses %}
+                        <div class="">
+                            {{address.name}}
+                            <i class="fa fa-pencil px-2 editaddress" data-id="{{address.id}}" data-bs-toggle="modal" data-bs-target="#addressmodal"></i><br>
+                            {{address.addressline}}<br>
+                            {{address.city}} - {{address.pin}}<br>
+                            {{address.state}}, {{address.country}}<br>
+                            Ph : {{address.phone}}<br>
+                            <hr>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>    
     </div>
 {% endblock %}

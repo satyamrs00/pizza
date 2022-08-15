@@ -32,7 +32,7 @@ div#addressform {
 .close {
     cursor: pointer;
 }
-.alert-danger {
+.alert {
     padding: 0.2rem;
 }
 #content, #layout {
@@ -186,4 +186,7 @@ input[type="checkbox"]:checked + span:before {
 }
 nav a:hover, nav a:focus {
     text-decoration: none;
+}
+h2 i:hover, h2 i:focus {
+    cursor: default;
 }
