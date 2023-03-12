@@ -174,3 +174,10 @@ try:
 
 except UndefinedValueError:
     pass
+
+try:
+    config('DJANGO_DEBUG')
+    DEBUG = True
+    ALLOWED_HOSTS = ['*']
+except UndefinedValueError:
+    pass
