@@ -5,8 +5,6 @@ set -o errexit
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pip install gunicorn
-sudo apt-get install gunicorn
 
 python manage.py collectstatic --no-input
 python manage.py migrate
