@@ -202,4 +202,4 @@ class Address(models.Model):
     country = models.CharField(max_length=200, default="")
     pin = models.PositiveIntegerField(default=0)
     phone = models.CharField(default="", max_length=16)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="addresses")
