@@ -17,6 +17,8 @@ def generate_superuser(apps, schema_editor):
 
     with transaction.atomic():    
         user = User()
+        if user.objects.filter(email=email).exists():
+            return
         user.email = BaseUserManager.normalize_email(email)
         user.password = make_password(password)
         user.is_staff = True
